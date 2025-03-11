@@ -1,0 +1,64 @@
+import React from "react";
+import Image from "next/image";
+
+//assets
+import AddIcon from "../../../public/add.svg";
+import Left from "../../../public/Left.svg";
+
+type ButtonType = "first" | "second" | "third" | "fourth";
+
+interface ButtonProps {
+  type?: ButtonType;
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({
+  type = "second",
+  children,
+  onClick,
+  className = "",
+}) => {
+  const buttonStyles: Record<ButtonType, string> = {
+    first:
+      "border text-white text-[16px] rounded-[5px] flex items-center gap-[4px] py-[10px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4] cursor-pointer transition-all group",
+    second:
+      "bg-white border text-black text-[16px] rounded-[5px] py-[10px] px-[20px] border-[#8338EC] hover:border-[#B588F4] cursor-pointer transition-all ",
+    third:
+      "flex items-center transition-all gap-[6px] hover:text-[#B588F4] cursor-pointer text-[#8338EC] text-[12px] group",
+    fourth:
+      "border text-white text-[16px] rounded-[20px] py-[8px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4] cursor-pointer transition-all",
+  };
+
+  const buttonClass = buttonStyles[type] || buttonStyles.second;
+
+  return (
+    <button
+      className={`${buttonClass} ${className} relative`}
+      onClick={onClick}
+    >
+      {type === "first" && (
+        <Image
+          src={AddIcon}
+          width={20}
+          height={20}
+          alt="add"
+          className="transition-opacity duration-300 opacity-100 group-hover:opacity-50"
+        />
+      )}
+      {type === "third" && (
+        <Image
+          src={Left}
+          width={16}
+          height={16}
+          alt="left"
+          className="transition-opacity duration-300 opacity-100 group-hover:opacity-50"
+        />
+      )}
+      {children}
+    </button>
+  );
+};
+
+export default Button;
