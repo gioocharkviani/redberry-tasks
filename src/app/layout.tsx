@@ -14,10 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className="">
-        <div className="w-full flex justify-center px-[40px] 2xl:px-[120px]">
-          <div className="w-full max-w-[1980px]">
-            <Header />
+      <body suppressHydrationWarning>
+        <div className="w-full flex flex-col items-center">
+          <Header />
+          <div className="w-full max-w-[1980px] px-[20px] xl:px-[120px]">
             {children}
           </div>
         </div>

@@ -40,7 +40,7 @@ const Department = ({ data }: { data: DepartmentType }) => {
 
   return (
     <div
-      className={`py-[5px] font-[400] text-center max-w-[88px]  text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor}`}
+      className={`py-[5px] font-[400] text-center max-w-[88px] overflow-hidden  text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor}`}
     >
       {data.name}
     </div>

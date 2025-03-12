@@ -21,7 +21,7 @@ const StatusBar = ({ name, id }: { name: string; id: number }) => {
 
   return (
     <div
-      className={`rounded-[10px] z-10 sticky top-[100] w-full h-[54px] max-w-[381px] text-white py-[15px] flex justify-center items-center font-[500] text-[20px] ${backgroundColor}`}
+      className={`rounded-[10px] z-[5] sticky top-[100px] w-full h-[54px] max-w-[381px] text-white py-[15px] flex justify-center items-center font-[500] text-[20px] ${backgroundColor}`}
     >
       {name}
     </div>

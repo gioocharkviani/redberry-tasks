@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
     third:
       "flex items-center transition-all h-[26px] gap-[6px] hover:text-[#B588F4] cursor-pointer text-[#8338EC] text-[12px] group",
     fourth:
-      "border text-white text-[16px] h-[35px] rounded-[20px] py-[8px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4] cursor-pointer transition-all",
+      "border text-white text-[16px] font-[400] h-[35px] rounded-[20px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4] cursor-pointer transition-all",
   };
 
   const buttonClass = buttonStyles[type] || buttonStyles.second;

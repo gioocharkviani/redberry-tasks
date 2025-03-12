@@ -4,6 +4,7 @@ import Department from "./Department";
 import Priority from "./Priority";
 import Date from "./Date";
 import Image from "next/image";
+import comm from "../../../public/comment.svg";
 
 const TaskCard = ({ data }: { data: Task }) => {
   let bgColor;
@@ -23,34 +24,51 @@ const TaskCard = ({ data }: { data: Task }) => {
     default:
       bgColor = "border-[gray]";
   }
+
+  const truncateDescription = (text: string, charLimit: number) => {
+    const textWithoutSpaces = text.replace(/\s/g, "");
+    if (textWithoutSpaces.length > charLimit) {
+      return text.slice(0, charLimit) + "...";
+    }
+    return text;
+  };
+
+  const truncatedDescription = truncateDescription(data.description, 100);
+
   return (
     <div
       className={`w-full border-[1px] flex justify-between flex-col p-[20px] max-w-[381px] relative overflow-hidden h-[217px] rounded-[15px] ${bgColor}`}
     >
       <div className="flex justify-between items-center w-full">
         <div className="flex gap-[10px] w-max shrink-0 ">
-          <Department data={data.department} />
           <Priority data={data.priority} />
+          <Department data={data.department} />
         </div>
         <Date data={data.due_date} />
       </div>
       <div className="flex flex-col gap-3">
         <span className="text-[15px] font-[500]">{data.name}</span>
-        <span className="text-[12px] font-[400]">{data.description}</span>
+        <span className="text-[12px] font-[400]">{truncatedDescription}</span>
       </div>
 
       <div className="flex justify-between gap-3">
-        <div>
-          {data.employee && (
+        <div className="w-[31] h-[31] rounded-[50%] bg-gray-400 overflow-hidden">
+          {data.employee.avatar ? (
             <Image
               src={data.employee.avatar}
               width={31}
               height={31}
-              alt="123"
+              alt={data.employee.name}
+              className="w-full h-full "
             />
+          ) : (
+            <div></div>
           )}
         </div>
-        <div></div>
+        <div className="flex  items-center gap-2">
+          <Image src={comm} width={20} height={18} alt="comment" />
+          <span className="text-[14px] font-[400]">{data.total_comments}</span>
+        </div>
       </div>
     </div>
   );
