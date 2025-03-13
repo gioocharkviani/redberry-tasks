@@ -1,25 +1,22 @@
-import StatusBar from "@/components/StatusBar";
-import { Status, Task } from "@/types";
 import {
   getAllStatus,
   getPriorities,
   getDepartments,
   getAllTask,
 } from "@/services";
-import TaskCard from "@/components/taskCard/TaskCard";
 import TaskFilter from "@/components/TaskFilter";
 import { getAllemploy } from "@/services/employ.service";
-
+import Tasks from "@/components/Tasks";
 export default async function Home() {
   const statusData = await getAllStatus();
   const taskData = await getAllTask();
+
   const prioritiesData = await getPriorities();
   const departmentData = await getDepartments();
   const employ = await getAllemploy();
-  //   console.log(taskData);
 
   return (
-    <div className="flex flex-col w-full ">
+    <div className="flex flex-col w-full relative">
       <h1 className="font-[600] text-[36px]">დავალებების გვერდი</h1>
       <TaskFilter
         filterBy={{
@@ -28,18 +25,7 @@ export default async function Home() {
           employees: employ,
         }}
       />
-      <div className="flex justify-between gap-6 2xl:gap-[52px] w-full">
-        {statusData.map((status: Status) => (
-          <div key={status.id} className="flex-col gap-[30px] flex w-full">
-            <StatusBar id={status.id} name={status.name} key={status.id} />
-            {taskData
-              .filter((task: Task) => task.status.id === status.id)
-              .map((filteredTask: Task) => (
-                <TaskCard data={filteredTask} key={filteredTask.id} />
-              ))}
-          </div>
-        ))}
-      </div>
+      <Tasks statusData={statusData} taskData={taskData} />
     </div>
   );
 }

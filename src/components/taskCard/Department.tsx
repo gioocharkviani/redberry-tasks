@@ -39,10 +39,12 @@ const Department = ({ data }: { data: DepartmentType }) => {
   }
 
   return (
-    <div
-      className={`py-[5px] font-[400] text-center max-w-[88px] overflow-hidden  text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor}`}
-    >
-      {data.name}
+    <div className="relative">
+      <div
+        className={`py-[5px] font-[400] text-center max-w-[88px] truncate hover:max-w-max transition-all duration-300 ease-in-out absolute z-1 cursor-pointer text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor} hover:scale-105 hover:bg-opacity-90 hover:shadow-lg`}
+      >
+        {data.name}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import checkedIcon from "../../../public/checked.svg";
 
 interface CheckboxProps {
@@ -15,14 +15,9 @@ const CustomCheckbox = ({
   checked = false,
   onChange,
 }: CheckboxProps) => {
-  const [isChecked, setIsChecked] = useState(checked);
-
   const handleChange = () => {
-    const newChecked = !isChecked;
-    setIsChecked(newChecked);
-
     if (onChange) {
-      onChange(newChecked);
+      onChange(!checked);
     }
   };
 
@@ -33,11 +28,11 @@ const CustomCheckbox = ({
     >
       <div
         className={`w-[22px] h-[22px] border-[1.5px] rounded-[6px] flex justify-center items-center ${
-          isChecked ? "border-[#8338EC]" : "border-gray-400"
+          checked ? "border-[#8338EC]" : "border-gray-400"
         }`}
         onClick={handleChange}
       >
-        {isChecked && (
+        {checked && (
           <Image src={checkedIcon} alt="checked" width={10} height={7} />
         )}
       </div>

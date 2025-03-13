@@ -31,3 +31,73 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Container for the calendar */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Header with navigation buttons */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.calendar-header button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.calendar-header span {
+  font-size: 18px;
+}
+
+/* Calendar grid container */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Day names (Sun, Mon, etc.) */
+.calendar-day-name {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Day cells */
+.calendar-day {
+  padding: 12px;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: #e0e0e0;
+}
+
+.calendar-day.selected {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.calendar-day.empty {
+  background-color: transparent;
+  cursor: default;
+}

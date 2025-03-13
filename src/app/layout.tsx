@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className="overflow-x-hidden">
         <div className="w-full flex flex-col items-center">
           <Header />
           <div className="w-full max-w-[1980px] px-[20px] xl:px-[120px]">
