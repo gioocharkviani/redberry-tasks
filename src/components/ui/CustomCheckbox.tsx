@@ -30,7 +30,6 @@ const CustomCheckbox = ({
         className={`w-[22px] h-[22px] border-[1.5px] rounded-[6px] flex justify-center items-center ${
           checked ? "border-[#8338EC]" : "border-gray-400"
         }`}
-        onClick={handleChange}
       >
         {checked && (
           <Image src={checkedIcon} alt="checked" width={10} height={7} />

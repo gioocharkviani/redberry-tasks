@@ -1,7 +1,13 @@
 import { DepartmentType } from "@/types";
 import React from "react";
 
-const Department = ({ data }: { data: DepartmentType }) => {
+const Department = ({
+  data,
+  hovered,
+}: {
+  hovered?: boolean;
+  data: DepartmentType;
+}) => {
   let backgroundColor;
   switch (data.id) {
     case 1:
@@ -41,7 +47,9 @@ const Department = ({ data }: { data: DepartmentType }) => {
   return (
     <div className="relative">
       <div
-        className={`py-[5px] font-[400] text-center max-w-[88px] truncate hover:max-w-max transition-all duration-300 ease-in-out absolute z-1 cursor-pointer text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor} hover:scale-105 hover:bg-opacity-90 hover:shadow-lg`}
+        className={`py-[5px] font-[400] text-center ${
+          hovered ? "max-w-[88px] hover:max-w-max" : ""
+        } truncate  transition-all duration-300 ease-in-out absolute z-1 cursor-pointer text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor} hover:scale-105 hover:bg-opacity-90 hover:shadow-lg`}
       >
         {data.name}
       </div>

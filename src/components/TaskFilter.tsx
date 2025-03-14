@@ -6,26 +6,32 @@ import arrowdefault from "../../public/arrowdefault.svg";
 import Image from "next/image";
 import CustomCheckbox from "./ui/CustomCheckbox";
 
-import { DepartmentType, Employee, PriorityTypes } from "@/types";
+// Import your types
+import { Employee, DepartmentType, PriorityTypes } from "@/types";
 
 interface FilterData {
   priorities: PriorityTypes[];
   departments: DepartmentType[];
   employees: Employee[];
 }
+
 interface TaskFilterProps {
   filterBy: FilterData;
 }
 
 const selectbyData = [
-  { id: 1, name: "დეპარტამენტი", data: "departments" },
-  { id: 2, name: "პრიორიტეტი", data: "priorities" },
-  { id: 3, name: "თანამშრომელი", data: "employees" },
+  { id: 1, name: "დეპარტამენტი", queryName: "department" },
+  { id: 2, name: "პრიორიტეტი", queryName: "department" },
+  { id: 3, name: "თანამშრომელი", queryName: "employ" },
 ];
 
 const TaskFilter = ({ filterBy }: TaskFilterProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [activeId, setActiveId] = useState<number | null>(null);
+  const [selectedData, setSelectedData] = useState<
+    Employee[] | DepartmentType[] | PriorityTypes[]
+  >([]);
+
   const handleOpen = (id: number) => {
     if (open && activeId === id) {
       setOpen(false);
@@ -36,8 +42,91 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
     }
   };
 
+  const saveLocalStorage = () => {
+    // Create an object that stores the selected data for each category
+    const selectedItems = {
+      employees: selectedData.filter((item) => "avatar" in item),
+      departments: selectedData.filter(
+        (item) => !("avatar" in item) && item.id
+      ),
+      priorities: selectedData.filter((item) => !("avatar" in item) && item.id), // Filter priorities (based on missing 'avatar')
+    };
+
+    localStorage.setItem(
+      "selectedEmployees",
+      JSON.stringify(selectedItems.employees)
+    );
+    localStorage.setItem(
+      "selectedDepartments",
+      JSON.stringify(selectedItems.departments)
+    );
+    localStorage.setItem(
+      "selectedPriorities",
+      JSON.stringify(selectedItems.priorities)
+    );
+  };
+
+  const handleChoose = () => {
+    saveLocalStorage();
+  };
+
+  const handleCheckboxChange = (
+    item: Employee | DepartmentType | PriorityTypes
+  ) => {
+    setSelectedData((prev) => {
+      if (activeId === 3) {
+        const filteredData = prev.filter(
+          (selectedItem) =>
+            !filterBy.employees.some((emp) => emp.id === selectedItem.id)
+        );
+
+        const isItemSelected = selectedData.some(
+          (selectedItem) => selectedItem.id === item.id
+        );
+
+        const returnedData = isItemSelected
+          ? filteredData.filter((selectedItem) => selectedItem.id !== item.id)
+          : [...filteredData, item];
+
+        return returnedData;
+      }
+      return prev.some((selectedItem) => selectedItem.id === item.id)
+        ? prev.filter((selectedItem) => selectedItem.id !== item.id)
+        : [...prev, item];
+    });
+  };
+
   const RenderCheckbox = () => {
-    return <CustomCheckbox label="test" />;
+    let dataToRender: Employee[] | DepartmentType[] | PriorityTypes[] = [];
+    if (activeId === 1) {
+      dataToRender = filterBy.departments;
+    } else if (activeId === 2) {
+      dataToRender = filterBy.priorities;
+    } else if (activeId === 3) {
+      dataToRender = filterBy.employees;
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        {dataToRender.map((item) => {
+          const isChecked = selectedData.some(
+            (selectedItem) =>
+              selectedItem.id === item.id && selectedItem.name === item.name
+          );
+          const avatar = "avatar" in item ? item.avatar : "";
+          return (
+            <div key={item.id} className="flex items-center gap-2">
+              <CustomCheckbox
+                checked={isChecked}
+                icon={avatar}
+                onChange={() => handleCheckboxChange(item)}
+                label={item.name}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -68,7 +157,7 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
               <RenderCheckbox />
             </div>
             <div className="w-full mt-[18px] flex justify-end">
-              <Button type="fourth" onClick={() => {}}>
+              <Button type="fourth" onClick={() => handleChoose()}>
                 არჩევა
               </Button>
             </div>
