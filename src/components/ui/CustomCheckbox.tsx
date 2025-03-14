@@ -5,20 +5,13 @@ import checkedIcon from "../../../public/checked.svg";
 interface CheckboxProps {
   label: string;
   icon?: string;
-  checked?: boolean;
-  onChange?: (checked: boolean) => void;
+  checked: boolean;
+  onChange: (checked: boolean) => void; // Ensuring onChange is required
 }
 
-const CustomCheckbox = ({
-  label,
-  icon,
-  checked = false,
-  onChange,
-}: CheckboxProps) => {
+const CustomCheckbox = ({ label, icon, checked, onChange }: CheckboxProps) => {
   const handleChange = () => {
-    if (onChange) {
-      onChange(!checked);
-    }
+    onChange(!checked); // Toggle the checked state and notify the parent
   };
 
   return (
@@ -31,6 +24,12 @@ const CustomCheckbox = ({
           checked ? "border-[#8338EC]" : "border-gray-400"
         }`}
       >
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={handleChange}
+          className="opacity-0 w-0 h-0"
+        />
         {checked && (
           <Image src={checkedIcon} alt="checked" width={10} height={7} />
         )}

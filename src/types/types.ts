@@ -1,9 +1,9 @@
 export interface Employee {
   id: number;
   name: string;
-  surname: string;
-  avatar: string;
-  department: DepartmentType;
+  surname?: string;
+  avatar?: string;
+  department?: DepartmentType;
 }
 
 export interface DepartmentType {
@@ -14,7 +14,7 @@ export interface DepartmentType {
 export interface PriorityTypes {
   id: number;
   name: string;
-  icon: string;
+  icon?: string;
 }
 
 export interface Status {

@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 interface ModalProps {
   children?: React.ReactNode;
-  setClose?: () => void;
+  setClose: () => void;
   open: boolean;
 }
 
@@ -33,8 +34,16 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
   if (!open) return null;
 
   return (
-    <div className="w-full h-[100vh] fixed backdrop-blur-xs top-0 z-[99] left-0 flex justify-center items-center">
-      <div className="modal-content" ref={modalRef}>
+    <div className="w-full h-[100vh] fixed bg-[#0D0F1026] backdrop-blur-xs top-0 z-[99] left-0 flex justify-center ">
+      <div
+        className="bg-white rounded-[10px] pt-[40px] pb-[60px] mt-[118px] h-max px-[50px]"
+        ref={modalRef}
+      >
+        <div className="w-full flex justify-end">
+          <button className="cursor-pointer" onClick={() => setClose()}>
+            <Image src="close.svg" width={40} height={40} alt="close" />
+          </button>
+        </div>
         {children}
         <button onClick={setClose}>Close</button>
       </div>
