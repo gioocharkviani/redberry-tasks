@@ -3,8 +3,8 @@ import Image from "next/image";
 import React from "react";
 import Button from "./ui/Buttons";
 
-const Comments = ({ data }: { data: Comment }) => {
-  const commentCount = data.length;
+const Comments = ({ data }: { data: Comment[] }) => {
+  const commentCount: number = data.length;
   return (
     <div className="flex flex-col">
       <div></div>
@@ -31,6 +31,18 @@ const Comments = ({ data }: { data: Comment }) => {
               <div className="mt-[15px]">
                 <Button type="third">უპასუხე</Button>
               </div>
+              {/* ReplayBox */}
+              <div className="flex gap-[12px] mt-[20px]">
+                <div className="w-[38px] h-[38px] bg-slate-200 rounded-full shrink-0"></div>
+                <div className="flex flex-col">
+                  <span className="text-[18px] font-[500]">ემილია მორგანი</span>
+                  <span className="text-[16px] font-[350]">
+                    დიზაინი სუფთად ჩანს, მაგრამ კოდირებისას მნიშვნელოვანი
+                    იქნება, რომ ელემენტებს ჰქონდეს შესაბამისი რეზოლუცია.
+                  </span>
+                </div>
+              </div>
+              {/* ReplayBox */}
             </div>
           </div>
           {/* oneCommentDesing */}

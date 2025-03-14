@@ -19,55 +19,34 @@ interface TaskFilterProps {
   filterBy: FilterData;
 }
 
-const selectbyData = [
-  { id: 1, name: "დეპარტამენტი", queryName: "department" },
-  { id: 2, name: "პრიორიტეტი", queryName: "department" },
-  { id: 3, name: "თანამშრომელი", queryName: "employ" },
-];
-
 const TaskFilter = ({ filterBy }: TaskFilterProps) => {
+  const selectbyData = [
+    { id: 1, name: "დეპარტამენტი", data: filterBy.departments },
+    { id: 2, name: "პრიორიტეტი", data: filterBy.priorities },
+    { id: 3, name: "თანამშრომელი", data: filterBy.employees },
+  ];
   const [open, setOpen] = useState<boolean>(false);
   const [activeId, setActiveId] = useState<number | null>(null);
   const [selectedData, setSelectedData] = useState<
     Employee[] | DepartmentType[] | PriorityTypes[]
   >([]);
+  const [renderData, setRenderData] = useState<
+    Employee[] | DepartmentType[] | PriorityTypes[]
+  >([]);
 
-  const handleOpen = (id: number) => {
+  const handleOpen = (
+    id: number,
+    data: Employee[] | DepartmentType[] | PriorityTypes[]
+  ) => {
     if (open && activeId === id) {
       setOpen(false);
+      setRenderData([]);
       setActiveId(null);
     } else {
+      setRenderData(data);
       setActiveId(id);
       setOpen(true);
     }
-  };
-
-  const saveLocalStorage = () => {
-    // Create an object that stores the selected data for each category
-    const selectedItems = {
-      employees: selectedData.filter((item) => "avatar" in item),
-      departments: selectedData.filter(
-        (item) => !("avatar" in item) && item.id
-      ),
-      priorities: selectedData.filter((item) => !("avatar" in item) && item.id), // Filter priorities (based on missing 'avatar')
-    };
-
-    localStorage.setItem(
-      "selectedEmployees",
-      JSON.stringify(selectedItems.employees)
-    );
-    localStorage.setItem(
-      "selectedDepartments",
-      JSON.stringify(selectedItems.departments)
-    );
-    localStorage.setItem(
-      "selectedPriorities",
-      JSON.stringify(selectedItems.priorities)
-    );
-  };
-
-  const handleChoose = () => {
-    saveLocalStorage();
   };
 
   const handleCheckboxChange = (
@@ -97,18 +76,9 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
   };
 
   const RenderCheckbox = () => {
-    let dataToRender: Employee[] | DepartmentType[] | PriorityTypes[] = [];
-    if (activeId === 1) {
-      dataToRender = filterBy.departments;
-    } else if (activeId === 2) {
-      dataToRender = filterBy.priorities;
-    } else if (activeId === 3) {
-      dataToRender = filterBy.employees;
-    }
-
     return (
       <div className="flex flex-col gap-2">
-        {dataToRender.map((item) => {
+        {renderData.map((item) => {
           const isChecked = selectedData.some(
             (selectedItem) =>
               selectedItem.id === item.id && selectedItem.name === item.name
@@ -135,9 +105,12 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
         <div className="border flex items-center gap-[41px] border-[#DEE2E6] w-max rounded-[10px] h-[44px]">
           {selectbyData.map((i) => (
             <button
+              disabled={i.data.length === 0}
               key={i.id}
-              onClick={() => handleOpen(i.id)}
-              className={`py-[10px] flex gap-2 items-center px-[18px] text-[16px] font-[400] ${
+              onClick={() => handleOpen(i.id, i.data)}
+              className={`py-[10px] flex gap-2 items-center ${
+                i.data.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+              } px-[18px] text-[16px] font-[400] ${
                 open && activeId === i.id ? "text-[#8338EC]" : "text-[black]"
               }`}
             >
@@ -157,7 +130,7 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
               <RenderCheckbox />
             </div>
             <div className="w-full mt-[18px] flex justify-end">
-              <Button type="fourth" onClick={() => handleChoose()}>
+              <Button type="fourth" onClick={() => {}}>
                 არჩევა
               </Button>
             </div>

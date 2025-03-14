@@ -12,12 +12,14 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   type = "second",
   children,
   onClick,
+  disabled,
   className = "",
 }) => {
   const buttonStyles: Record<ButtonType, string> = {
@@ -35,6 +37,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      disabled={disabled}
       className={`${buttonClass} ${className} relative`}
       onClick={onClick}
     >

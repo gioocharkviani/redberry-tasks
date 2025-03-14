@@ -8,12 +8,12 @@ import TaskFilter from "@/components/TaskFilter";
 import { getAllemploy } from "@/services/employ.service";
 import Tasks from "@/components/Tasks";
 export default async function Home() {
-  const statusData = await getAllStatus();
-  const taskData = await getAllTask();
+  const statusData = (await getAllStatus()) || [];
+  const taskData = (await getAllTask()) || [];
 
-  const prioritiesData = await getPriorities();
-  const departmentData = await getDepartments();
-  const employ = await getAllemploy();
+  const prioritiesData = (await getPriorities()) || [];
+  const departmentData = (await getDepartments()) || [];
+  const employ = (await getAllemploy()) || [];
 
   return (
     <div className="flex flex-col w-full relative">
@@ -25,6 +25,7 @@ export default async function Home() {
           employees: employ,
         }}
       />
+
       <Tasks statusData={statusData} taskData={taskData} />
     </div>
   );
