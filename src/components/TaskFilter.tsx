@@ -29,11 +29,11 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
     PriorityTypes[] | DepartmentType[] | Employee[]
   >([]);
 
-  // Load filters from localStorage
-  const loadFiltersFromLocalStorage = () => {
-    const departmentData = localStorage.getItem("department");
-    const priorityData = localStorage.getItem("priority");
-    const employData = localStorage.getItem("employ");
+  // Load filters from sessionStorage
+  const loadFiltersFromSessionStorage = () => {
+    const departmentData = sessionStorage.getItem("department");
+    const priorityData = sessionStorage.getItem("priority");
+    const employData = sessionStorage.getItem("employ");
 
     const selectedDepartments: DepartmentType[] = [];
     const selectedPriorities: PriorityTypes[] = [];
@@ -76,7 +76,7 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
   };
 
   useEffect(() => {
-    loadFiltersFromLocalStorage();
+    loadFiltersFromSessionStorage();
   }, []);
 
   const [open, setOpen] = useState<boolean>(false);
@@ -90,13 +90,13 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
 
     if (activeId === 1) {
       const ids = department.map((item) => item.id);
-      localStorage.setItem("department", ids.join(","));
+      sessionStorage.setItem("department", ids.join(","));
     } else if (activeId === 2) {
       const ids = priority.map((item) => item.id);
-      localStorage.setItem("priority", ids.join(","));
+      sessionStorage.setItem("priority", ids.join(","));
     } else if (activeId === 3) {
       const ids = employs.map((item) => item.id);
-      localStorage.setItem("employ", ids.join(","));
+      sessionStorage.setItem("employ", ids.join(","));
     }
   };
 
@@ -119,12 +119,19 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
     let isChecked = false;
     if (activeId === 1) {
       isChecked = department.some(
-        (selectedItem) => selectedItem.id === item.id
+        (selectedItem) =>
+          selectedItem.id === item.id && selectedItem.name === item.name
       );
     } else if (activeId === 2) {
-      isChecked = priority.some((selectedItem) => selectedItem.id === item.id);
+      isChecked = priority.some(
+        (selectedItem) =>
+          selectedItem.id === item.id && selectedItem.name === item.name
+      );
     } else if (activeId === 3) {
-      isChecked = employs.some((selectedItem) => selectedItem.id === item.id);
+      isChecked = employs.some(
+        (selectedItem) =>
+          selectedItem.id === item.id && selectedItem.name === item.name
+      );
     }
     return isChecked;
   };
@@ -135,34 +142,33 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
     if (activeId === 1) {
       setDepartment((prev) => {
         const newDepartment = prev.some(
-          (selectedItem) => selectedItem.id === item.id
+          (selectedItem) =>
+            selectedItem.id === item.id && selectedItem.name === item.name
         )
-          ? prev.filter((selectedItem) => selectedItem.id !== item.id)
+          ? prev.filter(
+              (selectedItem) =>
+                selectedItem.id !== item.id || selectedItem.name !== item.name
+            )
           : [...prev, item];
-
-        const ids = newDepartment.map((item) => item.id);
-        localStorage.setItem("department", ids.join(","));
-
         return newDepartment;
       });
     }
     if (activeId === 2) {
       setPriority((prev) => {
         const newPriority = prev.some(
-          (selectedItem) => selectedItem.id === item.id
+          (selectedItem) =>
+            selectedItem.id === item.id && selectedItem.name === item.name
         )
-          ? prev.filter((selectedItem) => selectedItem.id !== item.id)
+          ? prev.filter(
+              (selectedItem) =>
+                selectedItem.id !== item.id || selectedItem.name !== item.name
+            )
           : [...prev, item];
-
-        const ids = newPriority.map((item) => item.id);
-        localStorage.setItem("priority", ids.join(","));
-
         return newPriority;
       });
     }
     if (activeId === 3) {
       setEmploys([item]);
-      localStorage.setItem("employ", item.id.toString());
     }
   };
 
@@ -192,10 +198,65 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
     setDepartment([]);
     setPriority([]);
     setFilterAllData([]);
-    localStorage.removeItem("employ");
-    localStorage.removeItem("priority");
-    localStorage.removeItem("department");
+    sessionStorage.removeItem("employ");
+    sessionStorage.removeItem("priority");
+    sessionStorage.removeItem("department");
   };
+
+  const handleButtonClick = (
+    item: Employee | DepartmentType | PriorityTypes
+  ) => {
+    if (
+      department.some(
+        (selectedItem) =>
+          selectedItem.id === item.id && selectedItem.name === item.name
+      )
+    ) {
+      const updatedDepartment = department.filter(
+        (selectedItem) => selectedItem.id !== item.id
+      );
+      setDepartment(updatedDepartment);
+      const ids = updatedDepartment.map((item) => item.id);
+      sessionStorage.setItem("department", ids.join(","));
+    }
+
+    if (
+      priority.some(
+        (selectedItem) =>
+          selectedItem.id === item.id && selectedItem.name === item.name
+      )
+    ) {
+      const updatedPriority = priority.filter(
+        (selectedItem) => selectedItem.id !== item.id
+      );
+      setPriority(updatedPriority);
+      const ids = updatedPriority.map((item) => item.id);
+      sessionStorage.setItem("priority", ids.join(","));
+    }
+
+    if (
+      employs.some(
+        (selectedItem) =>
+          selectedItem.id === item.id && selectedItem.name === item.name
+      )
+    ) {
+      const updatedEmploys = employs.filter(
+        (selectedItem) => selectedItem.id !== item.id
+      );
+      setEmploys(updatedEmploys);
+      sessionStorage.setItem(
+        "employ",
+        updatedEmploys.map((item) => item.id).join(",")
+      );
+    }
+
+    const updateAllFilter = filterAllData.filter(
+      (selectedItem) => selectedItem.id !== item.id
+    );
+
+    setFilterAllData(updateAllFilter);
+  };
+  console.log(filterAllData);
 
   return (
     <div className="flex flex-col mt-[52px] mb-[24px]">
@@ -244,11 +305,14 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
         <div className="mt-[25px] flex flex-wrap gap-8 w-full">
           {filterAllData.map((i) => (
             <button
-              onClick={() => {}}
-              className="py-[6px] px-[10px] border border-[#CED4DA] rounded-[43px]"
+              onClick={() => handleButtonClick(i)}
+              className="py-[6px] px-[10px] border w-max items-center flex gap-1 border-[#CED4DA] rounded-[43px]"
               key={i.id + i.name}
             >
-              {i.name}
+              <span className="font-[400] text-[14]">{i.name}</span>
+              <div className="w-[14px] h-[14px] shrink-0">
+                <Image src="x.svg" width={14} height={14} alt="close" />
+              </div>
             </button>
           ))}
           <button

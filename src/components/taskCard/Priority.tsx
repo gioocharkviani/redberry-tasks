@@ -22,7 +22,7 @@ const Priority = ({ data }: { data: PriorityTypes }) => {
       className={`flex w-full items-center border-[0.5px] max-w-[86px] h-[26px] p-[4px] gap-1 rounded-[5px]`}
       style={{ borderColor: mainColor }}
     >
-      <Image src={data.icon} alt={data.name} width={16} height={16} />
+      <Image src={`${data.icon}`} alt={data.name} width={16} height={16} />
       <span className={`text-[12px] font-[500] `} style={{ color: mainColor }}>
         {data.name}
       </span>
