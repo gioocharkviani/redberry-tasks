@@ -52,3 +52,8 @@ export interface Comment {
   author_nickname: string;
   sub_comments: SubComment[];
 }
+
+export interface createCommentBody {
+  text: string;
+  parent_id: number | null;
+}

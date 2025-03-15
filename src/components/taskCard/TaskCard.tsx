@@ -63,6 +63,7 @@ const TaskCard = ({ data }: { data: Task }) => {
                 height={31}
                 alt={data.employee.name}
                 className="w-full h-full "
+                unoptimized
               />
             ) : (
               <div></div>

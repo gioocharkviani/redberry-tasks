@@ -213,7 +213,8 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
       )
     ) {
       const updatedDepartment = department.filter(
-        (selectedItem) => selectedItem.id !== item.id
+        (selectedItem) =>
+          selectedItem.id !== item.id && selectedItem.name === item.name
       );
       setDepartment(updatedDepartment);
       const ids = updatedDepartment.map((item) => item.id);
@@ -227,7 +228,8 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
       )
     ) {
       const updatedPriority = priority.filter(
-        (selectedItem) => selectedItem.id !== item.id
+        (selectedItem) =>
+          selectedItem.id !== item.id && selectedItem.name === item.name
       );
       setPriority(updatedPriority);
       const ids = updatedPriority.map((item) => item.id);
@@ -241,7 +243,8 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
       )
     ) {
       const updatedEmploys = employs.filter(
-        (selectedItem) => selectedItem.id !== item.id
+        (selectedItem) =>
+          selectedItem.id !== item.id && selectedItem.name === item.name
       );
       setEmploys(updatedEmploys);
       sessionStorage.setItem(
@@ -251,7 +254,8 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
     }
 
     const updateAllFilter = filterAllData.filter(
-      (selectedItem) => selectedItem.id !== item.id
+      (selectedItem) =>
+        selectedItem.id !== item.id && selectedItem.name !== item.name
     );
 
     setFilterAllData(updateAllFilter);

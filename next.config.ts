@@ -3,10 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "momentum.redberryinternship.ge",
-      },
-      {
-        hostname: "via.placeholder.com",
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },
