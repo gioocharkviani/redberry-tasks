@@ -4,12 +4,20 @@ import React, { useState, useRef } from "react";
 import Button from "@/components/ui/Buttons";
 import Image from "next/image";
 import { createCommentAction } from "@/actions/createComment";
+import { z } from "zod";
+
+const commentTextSchema = z
+  .string()
+  .min(1, "Comment cannot be empty")
+  .trim()
+  .refine((value) => value.length > 0, {
+    message: "Comment cannot be just whitespace",
+  });
 
 const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
   const [commentDataState, setCommentDataState] = useState<Comment[]>(data);
   const commentCount: number = commentDataState.length;
 
-  //state datas for body
   const [newCommentText, setNewCommentText] = useState<string>("");
   const [parentId, setParentId] = useState<number | null>(null);
 
@@ -30,7 +38,15 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
   };
 
   const handleCommentSubmit = async () => {
+    try {
+      commentTextSchema.parse(newCommentText);
+    } catch (error) {
+      console.error("Validation failed:", error);
+      return;
+    }
+
     if (!newCommentText.trim()) return;
+
     const commentData = {
       text: newCommentText,
       parent_id: parentId,
@@ -64,6 +80,10 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const isCommentValid =
+    newCommentText.trim() &&
+    commentTextSchema.safeParse(newCommentText).success;
+
   return (
     <div className="flex flex-col">
       <div className="bg-white w-full flex flex-col gap-[10px] pt-[18px] rounded-[10px] pb-[15px] px-[20px]">
@@ -76,7 +96,12 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
           onChange={handleTextChange}
         />
         <div className="flex justify-end">
-          <Button type="fourth" className="w-max" onClick={handleCommentSubmit}>
+          <Button
+            type="fourth"
+            className="w-max"
+            onClick={handleCommentSubmit}
+            disabled={!isCommentValid}
+          >
             დააკომენტარე
           </Button>
         </div>
