@@ -2,12 +2,19 @@ import React from "react";
 import Check from "../svg/Check";
 import Badge from "../svg/Badge";
 
+interface reqFilds {
+  text: string;
+}
+
 interface Input {
   label?: string;
   badge?: boolean;
+  error?: boolean;
+  errorText?: string;
+  requiredFilds?: reqFilds[];
 }
 
-const Input = ({ label, badge }: Input) => {
+const Input = ({ label, badge, error, errorText, requiredFilds }: Input) => {
   return (
     <div className="flex flex-col w-full">
       {label && (
@@ -25,12 +32,16 @@ const Input = ({ label, badge }: Input) => {
         )}
       </div>
       <div className="flex flex-col gap-1 mt-[8px]">
-        <div className="flex items-center gap-[2px]">
-          <Check stroke="green" />
-          <span className="text-[10px] font-[350px] text-[#6C757D]">
-            მინიმუმ 2 სიმბოლო
-          </span>
-        </div>
+        {requiredFilds?.map((_, index) => {
+          return (
+            <div key={index} className="flex items-center gap-[2px]">
+              <Check stroke="green" />
+              <span className="text-[10px] font-[350px] text-[#6C757D]">
+                {_.text}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
