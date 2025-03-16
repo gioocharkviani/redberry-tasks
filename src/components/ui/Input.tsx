@@ -14,7 +14,7 @@ interface Input {
   requiredFilds?: reqFilds[];
 }
 
-const Input = ({ label, badge, error, errorText, requiredFilds }: Input) => {
+const Input = ({ label, badge, requiredFilds }: Input) => {
   return (
     <div className="flex flex-col w-full">
       {label && (
