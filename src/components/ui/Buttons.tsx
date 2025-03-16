@@ -13,6 +13,7 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   disabled?: boolean;
+  icon?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   disabled,
   className = "",
+  icon = false,
 }) => {
   const buttonStyles: Record<ButtonType, string> = {
     first:
@@ -43,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       }`}
       onClick={onClick}
     >
-      {type === "first" && (
+      {type === "first" && icon && (
         <Image
           src={AddIcon}
           width={20}
@@ -52,7 +54,7 @@ const Button: React.FC<ButtonProps> = ({
           className="transition-opacity duration-300 opacity-100 group-hover:opacity-50"
         />
       )}
-      {type === "third" && (
+      {type === "third" && icon && (
         <Image
           src={Left}
           width={16}

@@ -45,7 +45,6 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
           </button>
         </div>
         {children}
-        <button onClick={setClose}>Close</button>
       </div>
     </div>
   );

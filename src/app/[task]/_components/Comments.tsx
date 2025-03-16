@@ -143,6 +143,7 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
                     <span className="text-[16px] font-[350]">{i.text}</span>
                     <div className="mt-[15px]">
                       <Button
+                        icon
                         type="third"
                         onClick={() => handleReplyClick(i.id)}
                       >

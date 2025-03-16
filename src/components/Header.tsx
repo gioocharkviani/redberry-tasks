@@ -17,7 +17,9 @@ const Header = () => {
           <Button type="second" onClick={() => setIsOpen(true)}>
             თანამშრომლის შექმნა
           </Button>
-          <Button type="first">შექმენი ახალი დავალება</Button>
+          <Button icon type="first">
+            შექმენი ახალი დავალება
+          </Button>
         </div>
       </div>
 
