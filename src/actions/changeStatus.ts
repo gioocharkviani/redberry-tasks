@@ -1,5 +1,5 @@
 "use server";
-
+import { revalidatePath } from "next/cache";
 import { changeStatus } from "@/services";
 
 export async function changeStatusAction({
@@ -9,6 +9,7 @@ export async function changeStatusAction({
   statusId: number;
   taskId: number;
 }) {
+  revalidatePath("/");
   try {
     const res = await changeStatus(statusId, taskId);
     return res;

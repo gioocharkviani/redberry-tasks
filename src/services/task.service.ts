@@ -1,7 +1,4 @@
-import { revalidatePath } from "next/cache";
-
 export async function getAllTask() {
-  revalidatePath("/");
   try {
     const res = await fetch(`${process.env.BASE_URL}/tasks`, {
       headers: {
