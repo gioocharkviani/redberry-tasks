@@ -61,12 +61,18 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
             </DropDownSelect>
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">
-            <Image width={24} height={24} src={userImg} alt="user" />
+            <Image
+              className="shrink-0"
+              width={24}
+              height={24}
+              src={userImg}
+              alt="user"
+            />
             <span className="text-[16px] font-[400]">თანამშრომელი</span>
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">
             <div className="flex gap-2">
-              <div className="w-[32px] rounded-[50%] bg-gray-400 overflow-hidden h-[32px]">
+              <div className="w-[32px] shrink-0 rounded-[50%] bg-gray-400 overflow-hidden h-[32px]">
                 <Image
                   width={24}
                   height={24}
@@ -86,7 +92,14 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
             </div>
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">
-            <Image width={24} height={24} src={calendarImg} alt="calendar" />
+            <Image
+              className="shrink-0"
+              width={24}
+              height={24}
+              src={calendarImg}
+              alt="calendar"
+            />
+
             <span className="text-[16px] font-[400]">დავალების ვადა</span>
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">{dueData}</div>

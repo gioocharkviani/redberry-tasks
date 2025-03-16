@@ -6,12 +6,12 @@ interface CheckboxProps {
   label: string;
   icon?: string;
   checked: boolean;
-  onChange: (checked: boolean) => void; // Ensuring onChange is required
+  onChange: (checked: boolean) => void;
 }
 
 const CustomCheckbox = ({ label, icon, checked, onChange }: CheckboxProps) => {
   const handleChange = () => {
-    onChange(!checked); // Toggle the checked state and notify the parent
+    onChange(!checked);
   };
 
   return (

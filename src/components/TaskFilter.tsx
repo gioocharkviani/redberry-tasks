@@ -4,6 +4,7 @@ import Button from "@/components/ui/Buttons";
 import Image from "next/image";
 import CustomCheckbox from "./ui/CustomCheckbox";
 import { Employee, DepartmentType, PriorityTypes } from "@/types";
+import { useFilterStore } from "@/store/filterStore";
 
 interface FilterData {
   priorities: PriorityTypes[];
@@ -11,180 +12,189 @@ interface FilterData {
   employees: Employee[];
 }
 
-interface TaskFilterProps {
-  filterBy: FilterData;
-}
-
-const TaskFilter = ({ filterBy }: TaskFilterProps) => {
+const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
   const selectbyData = [
     { id: 1, name: "დეპარტამენტი", data: filterBy.departments },
     { id: 2, name: "პრიორიტეტი", data: filterBy.priorities },
     { id: 3, name: "თანამშრომელი", data: filterBy.employees },
   ];
 
-  const [department, setDepartment] = useState<DepartmentType[]>([]);
-  const [priority, setPriority] = useState<PriorityTypes[]>([]);
-  const [employs, setEmploys] = useState<Employee[]>([]);
-  const [filterAllData, setFilterAllData] = useState<
-    PriorityTypes[] | DepartmentType[] | Employee[]
-  >([]);
+  const {
+    department,
+    priority,
+    employs,
+    setDepartment,
+    setEmploys,
+    setPriority,
+    setAllSelectedData,
+    allSelectedData,
+    resetFilters,
+  } = useFilterStore((state) => state);
 
-  // Load filters from sessionStorage
-  const loadFiltersFromSessionStorage = () => {
-    const departmentData = sessionStorage.getItem("department");
-    const priorityData = sessionStorage.getItem("priority");
-    const employData = sessionStorage.getItem("employ");
-
-    const selectedDepartments: DepartmentType[] = [];
-    const selectedPriorities: PriorityTypes[] = [];
-    const selectedEmployees: Employee[] = [];
-
-    if (departmentData) {
-      const depParamsData = departmentData.split(",");
-      filterBy.departments.forEach((i) => {
-        if (depParamsData.includes(i.id.toString())) {
-          selectedDepartments.push(i);
-        }
-      });
-      setDepartment(selectedDepartments);
-    }
-    if (priorityData) {
-      const priParamsData = priorityData.split(",");
-      filterBy.priorities.forEach((i) => {
-        if (priParamsData.includes(i.id.toString())) {
-          selectedPriorities.push(i);
-        }
-      });
-      setPriority(selectedPriorities);
-    }
-    if (employData) {
-      const empParamsData = employData.split(",");
-      filterBy.employees.forEach((i) => {
-        if (empParamsData.includes(i.id.toString())) {
-          selectedEmployees.push(i);
-        }
-      });
-      setEmploys(selectedEmployees);
-    }
-
-    const allSelectedData = [
-      ...selectedDepartments,
-      ...selectedEmployees,
-      ...selectedPriorities,
-    ];
-    setFilterAllData(allSelectedData);
-  };
-
+  //load dat from session storage
   useEffect(() => {
-    loadFiltersFromSessionStorage();
-  }, []);
+    const selectedData = sessionStorage.getItem("selectedData");
+    if (selectedData) {
+      const { department, priority, employs } = JSON.parse(selectedData);
+      const fullDepartments = filterBy.departments.filter((dep) =>
+        department.includes(dep.id)
+      );
+      const fullPriorities = filterBy.priorities.filter((pri) =>
+        priority.includes(pri.id)
+      );
+      const fullEmploys = filterBy.employees.filter((emp) =>
+        employs.includes(emp.id)
+      );
 
+      setDepartment(fullDepartments);
+      setPriority(fullPriorities);
+      setEmploys(fullEmploys);
+      setAllSelectedData({
+        department: fullDepartments,
+        priority: fullPriorities,
+        employs: fullEmploys,
+      });
+    }
+  }, [filterBy, setDepartment, setPriority, setEmploys, setAllSelectedData]);
+
+  //open filter Data box
   const [open, setOpen] = useState<boolean>(false);
   const [activeId, setActiveId] = useState<number | null>(null);
-  const [renderData, setRenderData] = useState<
-    Employee[] | DepartmentType[] | PriorityTypes[]
-  >([]);
 
-  const handleFilter = () => {
-    setFilterAllData([...department, ...priority, ...employs]);
+  //check if item is checked
+  const checkIfChecked = (id: number, name: string) => {
+    if (
+      department.some((i) => i.id === id && i.name === name) ||
+      priority.some((i) => i.id === id && i.name === name) ||
+      employs.some((i) => i.id === id && i.name === name)
+    ) {
+      return true;
+    }
+    return false;
+  };
 
+  //checkbox change multy and single select
+  const handleCeheckboxChange = (
+    i: PriorityTypes | DepartmentType | Employee
+  ) => {
     if (activeId === 1) {
-      const ids = department.map((item) => item.id);
-      sessionStorage.setItem("department", ids.join(","));
-    } else if (activeId === 2) {
-      const ids = priority.map((item) => item.id);
-      sessionStorage.setItem("priority", ids.join(","));
-    } else if (activeId === 3) {
-      const ids = employs.map((item) => item.id);
-      sessionStorage.setItem("employ", ids.join(","));
+      const checkIfItemInsideArray = department.some(
+        (department) => department.id === i.id
+      );
+      if (!checkIfItemInsideArray) {
+        setDepartment([...department, i]);
+      } else {
+        const filterData = department.filter((dep) => dep.id !== i.id);
+        setDepartment([...filterData]);
+      }
+    }
+    if (activeId === 2) {
+      const checkIfItemInsideArray = priority.some(
+        (priority) => priority.id === i.id
+      );
+      if (!checkIfItemInsideArray) {
+        setPriority([...priority, i]);
+      } else {
+        const filterData = priority.filter((pri) => pri.id !== i.id);
+        setPriority([...filterData]);
+      }
+    }
+    if (activeId === 3) {
+      setEmploys([i]);
     }
   };
 
-  const handleOpen = (
-    id: number,
-    data: Employee[] | DepartmentType[] | PriorityTypes[]
-  ) => {
+  const handleOpen = (id: number) => {
     if (open && activeId === id) {
       setOpen(false);
-      setRenderData([]);
       setActiveId(null);
     } else {
-      setRenderData(data);
       setActiveId(id);
       setOpen(true);
     }
   };
 
-  const isCheckedFunc = (item: Employee | DepartmentType | PriorityTypes) => {
-    let isChecked = false;
-    if (activeId === 1) {
-      isChecked = department.some(
-        (selectedItem) =>
-          selectedItem.id === item.id && selectedItem.name === item.name
-      );
-    } else if (activeId === 2) {
-      isChecked = priority.some(
-        (selectedItem) =>
-          selectedItem.id === item.id && selectedItem.name === item.name
-      );
-    } else if (activeId === 3) {
-      isChecked = employs.some(
-        (selectedItem) =>
-          selectedItem.id === item.id && selectedItem.name === item.name
-      );
-    }
-    return isChecked;
+  const saveToSessionStorage = (
+    department: DepartmentType[],
+    priority: PriorityTypes[],
+    employs: Employee[]
+  ) => {
+    sessionStorage.setItem(
+      "selectedData",
+      JSON.stringify({
+        department: department.map((i) => i.id),
+        priority: priority.map((i) => i.id),
+        employs: employs.map((i) => i.id),
+      })
+    );
   };
 
-  const handleCheckboxChange = (
-    item: Employee | DepartmentType | PriorityTypes
-  ) => {
-    if (activeId === 1) {
-      setDepartment((prev) => {
-        const newDepartment = prev.some(
-          (selectedItem) =>
-            selectedItem.id === item.id && selectedItem.name === item.name
-        )
-          ? prev.filter(
-              (selectedItem) =>
-                selectedItem.id !== item.id || selectedItem.name !== item.name
-            )
-          : [...prev, item];
-        return newDepartment;
-      });
-    }
-    if (activeId === 2) {
-      setPriority((prev) => {
-        const newPriority = prev.some(
-          (selectedItem) =>
-            selectedItem.id === item.id && selectedItem.name === item.name
-        )
-          ? prev.filter(
-              (selectedItem) =>
-                selectedItem.id !== item.id || selectedItem.name !== item.name
-            )
-          : [...prev, item];
-        return newPriority;
-      });
-    }
-    if (activeId === 3) {
-      setEmploys([item]);
-    }
+  const handleChoose = () => {
+    setAllSelectedData({
+      department: [...department],
+      priority: [...priority],
+      employs: [...employs],
+    });
+    saveToSessionStorage(department, priority, employs);
   };
+
+  // handle filter action
+  const handeFilter = (i: PriorityTypes | Employee | DepartmentType) => {
+    let updatedDepartment = [...department];
+    let updatedPriority = [...priority];
+    let updatedEmploys = [...employs];
+
+    if (
+      allSelectedData.department.find(
+        (item) => item.id === i.id && i.name === item.name
+      )
+    ) {
+      updatedDepartment = updatedDepartment.filter((item) => item.id !== i.id);
+    } else if (
+      allSelectedData.priority.find(
+        (item) => item.id === i.id && i.name === item.name
+      )
+    ) {
+      updatedPriority = updatedPriority.filter((item) => item.id !== i.id);
+    } else if (
+      allSelectedData.employs.find(
+        (item) => item.id === i.id && i.name === item.name
+      )
+    ) {
+      updatedEmploys = updatedEmploys.filter((item) => item.id !== i.id);
+    }
+
+    setDepartment(updatedDepartment);
+    setPriority(updatedPriority);
+    setEmploys(updatedEmploys);
+
+    setAllSelectedData({
+      department: updatedDepartment,
+      priority: updatedPriority,
+      employs: updatedEmploys,
+    });
+    saveToSessionStorage(updatedDepartment, updatedPriority, updatedEmploys);
+  };
+
+  const renderedData: PriorityTypes[] | DepartmentType[] | Employee[] = [
+    ...allSelectedData.department,
+    ...allSelectedData.priority,
+    ...allSelectedData.employs,
+  ];
 
   const RenderCheckbox = () => {
+    const renderCheckboxData = selectbyData.find((i) => i.id === activeId);
     return (
       <div className="flex flex-col gap-2">
-        {renderData.map((item) => {
-          const isChecked = isCheckedFunc(item);
-          const avatar = "avatar" in item ? item.avatar : "";
+        {renderCheckboxData?.data.map((i) => {
+          const avatar = "avatar" in i ? i?.avatar : "";
           return (
-            <div key={item.id} className="flex items-center gap-2">
+            <div key={i.id + i.name} className="flex items-center gap-2">
               <CustomCheckbox
-                checked={isChecked}
-                icon={avatar}
-                onChange={() => handleCheckboxChange(item)}
-                label={item.name}
+                checked={checkIfChecked(i.id, i.name)}
+                icon={`${avatar}`}
+                onChange={() => handleCeheckboxChange(i)}
+                label={i.name}
               />
             </div>
           );
@@ -192,75 +202,6 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
       </div>
     );
   };
-
-  const clearFilter = () => {
-    setEmploys([]);
-    setDepartment([]);
-    setPriority([]);
-    setFilterAllData([]);
-    sessionStorage.removeItem("employ");
-    sessionStorage.removeItem("priority");
-    sessionStorage.removeItem("department");
-  };
-
-  const handleButtonClick = (
-    item: Employee | DepartmentType | PriorityTypes
-  ) => {
-    if (
-      department.some(
-        (selectedItem) =>
-          selectedItem.id === item.id && selectedItem.name === item.name
-      )
-    ) {
-      const updatedDepartment = department.filter(
-        (selectedItem) =>
-          selectedItem.id !== item.id && selectedItem.name === item.name
-      );
-      setDepartment(updatedDepartment);
-      const ids = updatedDepartment.map((item) => item.id);
-      sessionStorage.setItem("department", ids.join(","));
-    }
-
-    if (
-      priority.some(
-        (selectedItem) =>
-          selectedItem.id === item.id && selectedItem.name === item.name
-      )
-    ) {
-      const updatedPriority = priority.filter(
-        (selectedItem) =>
-          selectedItem.id !== item.id && selectedItem.name === item.name
-      );
-      setPriority(updatedPriority);
-      const ids = updatedPriority.map((item) => item.id);
-      sessionStorage.setItem("priority", ids.join(","));
-    }
-
-    if (
-      employs.some(
-        (selectedItem) =>
-          selectedItem.id === item.id && selectedItem.name === item.name
-      )
-    ) {
-      const updatedEmploys = employs.filter(
-        (selectedItem) =>
-          selectedItem.id !== item.id && selectedItem.name === item.name
-      );
-      setEmploys(updatedEmploys);
-      sessionStorage.setItem(
-        "employ",
-        updatedEmploys.map((item) => item.id).join(",")
-      );
-    }
-
-    const updateAllFilter = filterAllData.filter(
-      (selectedItem) =>
-        selectedItem.id !== item.id && selectedItem.name !== item.name
-    );
-
-    setFilterAllData(updateAllFilter);
-  };
-  console.log(filterAllData);
 
   return (
     <div className="flex flex-col mt-[52px] mb-[24px]">
@@ -270,7 +211,7 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
             <button
               disabled={i.data.length === 0}
               key={i.id}
-              onClick={() => handleOpen(i.id, i.data)}
+              onClick={() => handleOpen(i.id)}
               className={`py-[10px] flex gap-2 items-center cursor-pointer ${
                 i.data.length === 0 ? "opacity-50 cursor-not-allowed" : ""
               } px-[18px] text-[16px] font-[400] ${
@@ -298,18 +239,19 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
               <RenderCheckbox />
             </div>
             <div className="w-full mt-[18px] flex justify-end">
-              <Button type="fourth" onClick={() => handleFilter()}>
+              <Button type="fourth" onClick={() => handleChoose()}>
                 არჩევა
               </Button>
             </div>
           </div>
         )}
       </div>
-      {filterAllData.length > 0 && (
+
+      {renderedData.length > 0 && (
         <div className="mt-[25px] flex flex-wrap gap-8 w-full">
-          {filterAllData.map((i) => (
+          {renderedData.map((i) => (
             <button
-              onClick={() => handleButtonClick(i)}
+              onClick={() => handeFilter(i)}
               className="py-[6px] px-[10px] border w-max items-center flex gap-1 border-[#CED4DA] rounded-[43px]"
               key={i.id + i.name}
             >
@@ -321,7 +263,7 @@ const TaskFilter = ({ filterBy }: TaskFilterProps) => {
           ))}
           <button
             className="cursor-pointer text-[14] font-400"
-            onClick={() => clearFilter()}
+            onClick={() => resetFilters()}
           >
             გასუფთავება
           </button>

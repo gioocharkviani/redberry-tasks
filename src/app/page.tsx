@@ -14,7 +14,7 @@ export default async function Home() {
   const prioritiesData = (await getPriorities()) || [];
   const departmentData = (await getDepartments()) || [];
   const employ = (await getAllemploy()) || [];
-
+  console.log(taskData);
   return (
     <div className="flex flex-col w-full relative">
       <h1 className="font-[600] text-[36px]">დავალებების გვერდი</h1>
