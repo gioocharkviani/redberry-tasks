@@ -31,6 +31,11 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
     resetFilters,
   } = useFilterStore((state) => state);
 
+  const resetAllData = () => {
+    resetFilters();
+    sessionStorage.removeItem("selectedData");
+  };
+
   //load dat from session storage
   useEffect(() => {
     const selectedData = sessionStorage.getItem("selectedData");
@@ -269,7 +274,7 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
           ))}
           <button
             className="cursor-pointer text-[14] font-400"
-            onClick={() => resetFilters()}
+            onClick={() => resetAllData()}
           >
             გასუფთავება
           </button>

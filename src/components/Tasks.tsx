@@ -44,7 +44,7 @@ const Tasks = ({
           ))}
         </div>
       ) : (
-        <div className="flex justify-center items-center">
+        <div className="flex mt-[20px] justify-center items-center font-[500] text-[18px]">
           დავალებები არ მოიძებნა ...
         </div>
       )}
