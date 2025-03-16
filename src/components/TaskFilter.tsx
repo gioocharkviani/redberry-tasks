@@ -100,7 +100,13 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
       }
     }
     if (activeId === 3) {
-      setEmploys([i]);
+      const checkIfItemInsideArray = employs.some((emp) => emp.id === i.id);
+      if (!checkIfItemInsideArray) {
+        setEmploys([i]);
+      } else {
+        const filterData = employs.filter((employee) => employee.id !== i.id);
+        setEmploys(filterData);
+      }
     }
   };
 
