@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import StatusBar from "./StatusBar";
 import TaskCard from "./taskCard/TaskCard";
 import { Status, Task } from "@/types";
@@ -14,19 +14,22 @@ const Tasks = ({
 }) => {
   const { allSelectedData } = useFilterStore((state) => state);
 
-  const filteredTasks = taskData.filter((task: Task) => {
-    const isDepartmentMatch =
-      allSelectedData.department.length === 0 ||
-      allSelectedData.department.some((dep) => dep.id === task.department.id);
-    const isEmployMatch =
-      allSelectedData.employs.length === 0 ||
-      allSelectedData.employs.some((emp) => emp.id === task.employee.id);
-    const isPriorityMatch =
-      allSelectedData.priority.length === 0 ||
-      allSelectedData.priority.some((pri) => pri.id === task.priority.id);
+  const filteredTasks = useMemo(() => {
+    return taskData.filter((task: Task) => {
+      const isDepartmentMatch =
+        allSelectedData.department.length === 0 ||
+        allSelectedData.department.some((dep) => dep.id === task.department.id);
+      const isEmployMatch =
+        allSelectedData.employs.length === 0 ||
+        allSelectedData.employs.some((emp) => emp.id === task.employee.id);
+      const isPriorityMatch =
+        allSelectedData.priority.length === 0 ||
+        allSelectedData.priority.some((pri) => pri.id === task.priority.id);
 
-    return isDepartmentMatch && isEmployMatch && isPriorityMatch;
-  });
+      return isDepartmentMatch && isEmployMatch && isPriorityMatch;
+    });
+  }, [allSelectedData]);
+
   return (
     <>
       {filteredTasks.length > 0 ? (
@@ -40,10 +43,7 @@ const Tasks = ({
               {filteredTasks
                 .filter((task: Task) => task.status.id === status.id)
                 .map((filteredTask: Task) => (
-                  <TaskCard
-                    data={filteredTask}
-                    key={filteredTask.id + Math.random()}
-                  />
+                  <TaskCard data={filteredTask} key={filteredTask.id} />
                 ))}
             </div>
           ))}
