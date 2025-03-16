@@ -1,4 +1,7 @@
+import { unstable_noStore } from "next/cache";
+
 export async function getAllTask() {
+  unstable_noStore();
   try {
     const res = await fetch(`${process.env.BASE_URL}/tasks`, {
       headers: {

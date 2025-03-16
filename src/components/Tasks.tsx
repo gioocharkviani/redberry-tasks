@@ -27,18 +27,23 @@ const Tasks = ({
 
     return isDepartmentMatch && isEmployMatch && isPriorityMatch;
   });
-
   return (
     <>
       {filteredTasks.length > 0 ? (
         <div className="flex justify-between gap-6 2xl:gap-[52px] w-full">
           {statusData.map((status: Status) => (
-            <div key={status.id} className="flex-col gap-[30px] flex w-full">
-              <StatusBar id={status.id} name={status.name} key={status.id} />
+            <div
+              key={status.id + status.name}
+              className="flex-col gap-[30px] flex w-full"
+            >
+              <StatusBar id={status.id} name={status.name} />
               {filteredTasks
                 .filter((task: Task) => task.status.id === status.id)
                 .map((filteredTask: Task) => (
-                  <TaskCard data={filteredTask} key={filteredTask.id} />
+                  <TaskCard
+                    data={filteredTask}
+                    key={filteredTask.id + Math.random()}
+                  />
                 ))}
             </div>
           ))}
