@@ -1,7 +1,7 @@
-import { unstable_noStore } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export async function getAllTask() {
-  unstable_noStore();
+  revalidatePath("/");
   try {
     const res = await fetch(`${process.env.BASE_URL}/tasks`, {
       headers: {

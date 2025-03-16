@@ -199,13 +199,14 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
       <div className="flex flex-col gap-2">
         {renderCheckboxData?.data.map((i) => {
           const avatar = "avatar" in i ? i?.avatar : "";
+          const name = "surname" in i ? `${i.name} ${i?.surname}` : i.name;
           return (
             <div key={i.id + i.name} className="flex items-center gap-2">
               <CustomCheckbox
                 checked={checkIfChecked(i.id, i.name)}
                 icon={`${avatar}`}
                 onChange={() => handleCeheckboxChange(i)}
-                label={i.name}
+                label={name}
               />
             </div>
           );
