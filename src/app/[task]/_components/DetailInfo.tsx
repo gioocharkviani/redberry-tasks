@@ -72,10 +72,10 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">
             <div className="flex gap-2">
-              <div className="w-[32px] shrink-0 rounded-[50%] bg-gray-400 overflow-hidden h-[32px]">
+              <div className="w-[32px] shrink-0 rounded-[50%] bg-[#c7d0ec]  overflow-hidden h-[32px]">
                 <Image
-                  width={24}
-                  height={24}
+                  width={32}
+                  height={32}
                   src={`${taskData.employee.avatar}`}
                   alt="user avatar"
                   unoptimized
