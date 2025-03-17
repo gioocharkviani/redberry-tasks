@@ -40,9 +40,9 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       disabled={disabled}
-      className={`${buttonClass} ${className} relative ${
+      className={`${buttonClass}  relative ${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
-      }`}
+      } ${className}`}
       onClick={onClick}
     >
       {type === "first" && icon && (

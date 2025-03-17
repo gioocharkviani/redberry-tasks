@@ -55,7 +55,7 @@ const TaskCard = ({ data }: { data: Task }) => {
         </div>
 
         <div className="flex justify-between gap-3">
-          <div className="w-[31] h-[31] rounded-[50%] bg-[#c7d0ec] overflow-hidden">
+          <div className="w-[31] h-[31] rounded-[50%] bg-[#dde0ea] overflow-hidden">
             {data.employee.avatar ? (
               <Image
                 src={data.employee.avatar}
