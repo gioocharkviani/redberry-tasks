@@ -36,7 +36,7 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
   return (
     <div className="w-full h-[100vh] fixed bg-[#0D0F1026] backdrop-blur-xs top-0 z-[99] left-0 flex justify-center ">
       <div
-        className="bg-white rounded-[10px] relative  pt-[40px] pb-[60px] mt-[118px] px-[50px] max-h-[70vh]"
+        className="bg-white rounded-[10px] relative  pt-[40px] pb-[60px] mt-[118px] px-[50px] max-h-[85vh]"
         ref={modalRef}
       >
         <div className="w-full flex justify-end">

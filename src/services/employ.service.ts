@@ -21,17 +21,14 @@ export async function getAllemploy() {
 
 export const createNewEmploy = async (body: FormData) => {
   try {
-    const res = await fetch(
-      `https://momentum.redberryinternship.ge/api/employees`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer 9e68c5de-40cd-49f3-ba27-7a3b9e53050e`,
-        },
-        body: body,
-      }
-    );
+    const res = await fetch(`${process.env.BASE_URL}/employees`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.PERSONAL_TOKEN}`,
+      },
+      body: body,
+    });
 
     if (!res.ok) {
       throw new Error(`Error: ${res.status} ${res.statusText}`);

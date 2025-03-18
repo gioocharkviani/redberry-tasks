@@ -11,7 +11,7 @@ interface ButtonProps {
   btntype?: ButtonType;
   type?: "submit" | "reset" | "button";
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   disabled?: boolean;
   icon?: boolean;

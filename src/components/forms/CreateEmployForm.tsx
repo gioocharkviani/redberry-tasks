@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +9,7 @@ import { DepartmentType } from "@/types";
 import Button from "../ui/Buttons";
 import DotLoader from "../Dotloader";
 import { useModalStore } from "@/store/modalStore";
-import { createNewEmploy } from "@/services/employ.service";
+import { createEmploy } from "@/actions/createEmploy";
 
 const nameSchema = z
   .string()
@@ -20,6 +19,7 @@ const surnameSchema = z
   .string()
   .min(2, "მინიმუმ 2 სიმბოლო")
   .max(255, "მაქსიმუმ 255 სიმბოლო");
+const departmentSchema = z.number().min(1, "დეპარტამენტი არ არის არჩეული");
 const avatarSchema = z
   .instanceof(File)
   .refine((file) => file.type.startsWith("image/"), {
@@ -33,7 +33,7 @@ const createEmployeeSchema = z.object({
   name: nameSchema,
   surname: surnameSchema,
   avatar: avatarSchema,
-  department_id: z.number().min(1, "გთხოვთ აირჩიეთ დეპარტამენტი"),
+  department_id: departmentSchema,
 });
 
 type FormData = z.infer<typeof createEmployeeSchema>;
@@ -46,6 +46,7 @@ const CreateEmployForm = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedDep, setSelectedDep] = useState<DepartmentType | null>(null);
+
   const {
     control,
     handleSubmit,
@@ -95,9 +96,8 @@ const CreateEmployForm = () => {
     if (file) {
       formData.append("avatar", file);
     }
-
     try {
-      const res = await createNewEmploy(formData);
+      const res = await createEmploy({ data: formData });
       reset();
       setFile(null);
       setSelectedDep(null);
@@ -220,7 +220,14 @@ const CreateEmployForm = () => {
           />
         </div>
         <div className="w-full items-center mt-[45px] gap-4 flex justify-end">
-          <Button btntype="second" className="w-max mt-[20px]">
+          <Button
+            btntype="second"
+            className="w-max mt-[20px]"
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+              event.preventDefault();
+              setIsOpen(false);
+            }}
+          >
             გაუქმება
           </Button>
           <Button
