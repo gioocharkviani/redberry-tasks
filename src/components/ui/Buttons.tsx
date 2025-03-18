@@ -8,7 +8,8 @@ import Left from "../../../public/Left.svg";
 type ButtonType = "first" | "second" | "third" | "fourth";
 
 interface ButtonProps {
-  type?: ButtonType;
+  btntype?: ButtonType;
+  type?: "submit" | "reset" | "button";
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
@@ -17,8 +18,9 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-  type = "second",
+  btntype = "first",
   children,
+  type,
   onClick,
   disabled,
   className = "",
@@ -26,26 +28,27 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const buttonStyles: Record<ButtonType, string> = {
     first:
-      "border text-white text-[16px] h-[40px] rounded-[5px] flex items-center gap-[4px] py-[10px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4]  transition-all group",
+      "text-white text-[16px] h-[42px] rounded-[5px] flex items-center gap-[4px] py-[10px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4]  transition-all group",
     second:
-      "bg-white border text-black text-[16px] h-[40px] rounded-[5px] py-[10px] px-[20px] border-[#8338EC] hover:border-[#B588F4]  transition-all ",
+      "bg-white border text-black text-[16px] h-[42px] rounded-[5px] py-[10px] px-[20px] border-[#8338EC] hover:border-[#B588F4]  transition-all ",
     third:
       "flex items-center transition-all h-[26px] gap-[6px] hover:text-[#B588F4]  text-[#8338EC] text-[12px] group",
     fourth:
       "border text-white text-[16px] font-[400] h-[35px] rounded-[20px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4]  transition-all",
   };
 
-  const buttonClass = buttonStyles[type] || buttonStyles.second;
+  const buttonClass = buttonStyles[btntype] || buttonStyles.second;
 
   return (
     <button
+      type={type}
       disabled={disabled}
       className={`${buttonClass}  relative ${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
       } ${className}`}
       onClick={onClick}
     >
-      {type === "first" && icon && (
+      {btntype === "first" && icon && (
         <Image
           src={AddIcon}
           width={20}
@@ -54,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({
           className="transition-opacity duration-300 opacity-100 group-hover:opacity-50"
         />
       )}
-      {type === "third" && icon && (
+      {btntype === "third" && icon && (
         <Image
           src={Left}
           width={16}

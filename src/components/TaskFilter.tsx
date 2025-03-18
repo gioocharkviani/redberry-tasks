@@ -246,12 +246,12 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
         </div>
 
         {open && (
-          <div className="pt-[40px] w-full px-[30px] pb-[20] absolute z-[9] top-[50px] bg-white border-[0.5px] border-[#8338EC] rounded-[10px]">
+          <div className="pt-[40px] max-h-[400px] overflow-y-auto w-full px-[30px] pb-[20] absolute z-[9] top-[50px] bg-white border-[0.5px] border-[#8338EC] rounded-[10px]">
             <div>
               <RenderCheckbox />
             </div>
             <div className="w-full mt-[18px] flex justify-end">
-              <Button type="fourth" onClick={() => handleChoose()}>
+              <Button btntype="fourth" onClick={() => handleChoose()}>
                 არჩევა
               </Button>
             </div>

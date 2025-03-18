@@ -114,7 +114,7 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
         />
         <div className="flex justify-end">
           <Button
-            type="fourth"
+            btntype="fourth"
             className="w-max"
             onClick={handleCommentSubmit}
             disabled={!isCommentValid}
@@ -172,12 +172,15 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
                           <div className="flex justify-end gap-2 items-center cursor-pointer">
                             <button
                               className="text-[14px] font-[500]"
-                              onClick={() => setReplayOpen(null)}
+                              onClick={() => {
+                                setReplayOpen(null);
+                                setReplayText("");
+                              }}
                             >
                               გაუქმება
                             </button>
                             <Button
-                              type="fourth"
+                              btntype="fourth"
                               className="w-max"
                               onClick={handleReplySubmit}
                               disabled={!isReplyValid}
@@ -190,7 +193,7 @@ const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
                       {replayOpen !== i.id && (
                         <Button
                           icon
-                          type="third"
+                          btntype="third"
                           onClick={() => setReplayOpen(i.id)}
                         >
                           უპასუხე

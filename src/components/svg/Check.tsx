@@ -25,8 +25,8 @@ const Check: React.FC<IconProps> = ({
         d="M12.3327 1L4.99935 8.33333L1.66602 5"
         stroke={stroke}
         strokeWidth="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
