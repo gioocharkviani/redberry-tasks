@@ -5,6 +5,9 @@ import Button from "./ui/Buttons";
 import { useModalStore } from "@/store/modalStore";
 import Logo from "./Logo";
 import CreateEmployForm from "./forms/CreateEmployForm";
+import Link from "next/link";
+import Image from "next/image";
+import AddIcon from "../../public/add.svg";
 
 const Header = () => {
   const { isOpen, setIsOpen } = useModalStore((state) => state);
@@ -17,9 +20,19 @@ const Header = () => {
           <Button btntype="second" onClick={() => setIsOpen(true)}>
             თანამშრომლის შექმნა
           </Button>
-          <Button icon btntype="first">
+          <Link
+            href="/create-task"
+            className="text-white text-[16px] h-[42px] rounded-[5px] flex items-center gap-[4px] py-[10px] px-[20px] bg-[#8338EC] hover:bg-[#B588F4]  transition-all group"
+          >
+            <Image
+              src={AddIcon}
+              width={20}
+              height={20}
+              alt="add"
+              className="transition-opacity duration-300 opacity-100 group-hover:opacity-50"
+            />
             შექმენი ახალი დავალება
-          </Button>
+          </Link>
         </div>
       </div>
 
