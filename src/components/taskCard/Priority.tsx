@@ -23,7 +23,10 @@ const Priority = ({ data }: { data: PriorityTypes }) => {
       style={{ borderColor: mainColor }}
     >
       <Image src={`${data.icon}`} alt={data.name} width={16} height={16} />
-      <span className={`text-[12px] font-[500] `} style={{ color: mainColor }}>
+      <span
+        className={`text-[12px] font-[500] w-[16px] h-[16px]`}
+        style={{ color: mainColor }}
+      >
         {data.name}
       </span>
     </div>

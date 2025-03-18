@@ -44,7 +44,13 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
         <h2 className="text-[24px] font-[500]">დავალების დეტალები</h2>
         <div className="grid grid-cols-2 gap-4 mt-[18px]">
           <div className="h-[70px] flex items-center gap-[8px]">
-            <Image width={24} height={24} src={statusImg} alt="status" />
+            <Image
+              width={24}
+              height={24}
+              src={statusImg}
+              alt="status"
+              className="w-[24px] h-[24px] shrink-0"
+            />
             <span className="text-[16px] font-[400]">სტატუსი</span>
           </div>
           <div className="h-[70px] flex my-[12.5px] gap-[8px]">
@@ -62,7 +68,7 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">
             <Image
-              className="shrink-0"
+              className="shrink-0 w-[24px] h-[24px]"
               width={24}
               height={24}
               src={userImg}
@@ -93,7 +99,7 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
           </div>
           <div className="h-[70px] flex items-center gap-[8px]">
             <Image
-              className="shrink-0"
+              className="shrink-0 w-[24px] h-[24px]"
               width={24}
               height={24}
               src={calendarImg}

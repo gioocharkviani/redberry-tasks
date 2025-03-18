@@ -11,14 +11,15 @@ const Logo = () => {
         height={38}
         alt="Logo"
         src={momentumLogo}
-        className="shrink-0"
+        className="shrink-0  w-[168px] h-[auto]"
+        priority={true}
       />
       <Image
         width={38}
         height={38}
         alt="Hourglass"
         src={Hourglass}
-        className="shrink-0 hourglass-animation"
+        className="shrink-0 hourglass-animation w-[38px] h-[38px]"
       />
     </Link>
   );

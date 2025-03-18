@@ -50,7 +50,7 @@ const DropDownSelect = ({
             width={14}
             height={14}
             alt="arrow"
-            className={`${
+            className={`w-[14px] h-[14px] ${
               dropped ? "rotate-180" : "rotate-0"
             } transition-all ease-in-out`}
           />
