@@ -1,4 +1,4 @@
-import { unstable_noStore } from "next/cache";
+import { unstable_noStore, revalidatePath } from "next/cache";
 
 export async function getAllemploy() {
   unstable_noStore();
@@ -20,6 +20,7 @@ export async function getAllemploy() {
 }
 
 export const createNewEmploy = async (body: FormData) => {
+  revalidatePath("/");
   try {
     const res = await fetch(`${process.env.BASE_URL}/employees`, {
       method: "POST",

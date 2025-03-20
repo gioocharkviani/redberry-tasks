@@ -61,7 +61,10 @@ const ImageInput: React.FC<InputProps> = ({
             <button
               type="button"
               className="absolute w-[24px] h-[24px] flex justify-center items-center bg-white rounded-full bottom-0 z-[10] right-0 border border-[#6C757D] cursor-pointer"
-              onClick={handleRemove}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove?.();
+              }}
             >
               <Image width={14} height={14} alt="Remove" src="/trash-2.svg" />
             </button>

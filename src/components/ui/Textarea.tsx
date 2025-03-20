@@ -13,6 +13,7 @@ interface InputProps {
   error?: boolean;
   errorText?: string;
   requiredFilds?: reqFilds[];
+  defaultValue?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
@@ -21,6 +22,7 @@ const Textarea = ({
   label,
   badge,
   requiredFilds,
+  defaultValue,
   error,
   errorText,
   value = "",
@@ -43,6 +45,7 @@ const Textarea = ({
         }`}
       >
         <textarea
+          defaultValue={defaultValue}
           value={value}
           onChange={onChange}
           className={`w-full text-[14px] font-[350px] mt-[3px] min-h-[133px] outline-0 resize-none`}

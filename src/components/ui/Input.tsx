@@ -15,6 +15,7 @@ interface InputProps {
   requiredFilds?: reqFilds[];
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
 }
 
 const Input = ({
@@ -22,6 +23,7 @@ const Input = ({
   badge,
   requiredFilds,
   error,
+  defaultValue,
   errorText,
   value = "",
   onChange,
@@ -45,6 +47,7 @@ const Input = ({
       >
         <input
           type="text"
+          defaultValue={defaultValue}
           value={value}
           onChange={onChange}
           className={`w-full text-[14px] font-[350px] mt-[3px] h-[42px] outline-0 `}

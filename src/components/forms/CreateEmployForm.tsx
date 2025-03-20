@@ -9,7 +9,8 @@ import { DepartmentType } from "@/types";
 import Button from "../ui/Buttons";
 import DotLoader from "../Dotloader";
 import { useModalStore } from "@/store/modalStore";
-import { createEmploy } from "@/actions/createEmploy";
+import { createEmploy } from "@/actions/Employ";
+import { getAllDepartment } from "@/actions/departmentAction";
 
 const nameSchema = z
   .string()
@@ -62,14 +63,8 @@ const CreateEmployForm = () => {
   useEffect(() => {
     const getDeparmet = async () => {
       try {
-        const res = await fetch(
-          `https://momentum.redberryinternship.ge/api/departments`
-        );
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status} ${res.statusText}`);
-        }
-        const data = await res.json();
-        setDep(data);
+        const res = await getAllDepartment();
+        setDep(res);
       } catch (error) {
         console.error("An error occurred:", error);
       }

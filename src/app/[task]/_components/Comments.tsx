@@ -16,7 +16,12 @@ const commentTextSchema = z
 
 const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
   const [commentDataState, setCommentDataState] = useState<Comment[]>(data);
-  const commentCount: number = commentDataState.length;
+  const commentCount: number =
+    commentDataState.length +
+    commentDataState.reduce(
+      (acc, comment) => acc + comment.sub_comments.length,
+      0
+    );
 
   const [newCommentText, setNewCommentText] = useState<string>("");
   const [replayText, setReplayText] = useState<string>("");

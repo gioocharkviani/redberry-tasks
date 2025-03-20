@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import arrow from "../../../public/arrowdefault.svg";
 
 const DropDownSelect = ({
+  disable,
   selected,
   children,
   label,
@@ -18,6 +19,7 @@ const DropDownSelect = ({
   error?: boolean;
   errorText?: string;
   defaultValue?: string;
+  disable?: boolean;
 }) => {
   const [dropped, setDropped] = useState(false);
   useEffect(() => {
@@ -26,12 +28,18 @@ const DropDownSelect = ({
   return (
     <div className="w-full flex flex-col">
       {label && (
-        <span className="text-[#343A40] text-[14px] font-[500]">{label}</span>
+        <span
+          className={`text-[#343A40] text-[14px] font-[500] ${
+            disable ? "text-[#ADB5BD]" : ""
+          }`}
+        >
+          {label}
+        </span>
       )}
       <div
         className={`py-[0] relative w-full items-start bg-white  border rounded-[5px] ${
           error ? "border-[#FA4D4D]" : "border-[#CED4DA]"
-        }`}
+        } ${disable ? "border-[#DEE2E6]" : ""}`}
         style={{
           height: dropped ? "max-content" : "45px",
           transition: "height 1s ease-in-out",
@@ -39,21 +47,24 @@ const DropDownSelect = ({
       >
         <button
           className="flex px-[14px] py-[12px] justify-between items-center w-full h-[45px] gap-5 cursor-pointer"
+          disabled={disable}
           onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             setDropped(!dropped);
           }}
         >
-          <span>{selected || defaultValue}</span>
-          <Image
-            src={arrow}
-            width={14}
-            height={14}
-            alt="arrow"
-            className={`w-[14px] h-[14px] ${
-              dropped ? "rotate-180" : "rotate-0"
-            } transition-all ease-in-out`}
-          />
+          <span>{(!disable && selected) || defaultValue || ""}</span>
+          {!disable && (
+            <Image
+              src={arrow}
+              width={14}
+              height={14}
+              alt="arrow"
+              className={`w-[14px] h-[14px] ${
+                dropped ? "rotate-180" : "rotate-0"
+              } transition-all ease-in-out`}
+            />
+          )}
         </button>
 
         <div
