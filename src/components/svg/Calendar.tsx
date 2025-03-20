@@ -6,8 +6,8 @@ interface IconProps {
   height?: number;
 }
 
-const CalendarSvg: React.FC<IconProps> = ({
-  fill = "#4D596A",
+const minArrow: React.FC<IconProps> = ({
+  fill = "black",
   width = 14,
   height = 14,
 }) => {
@@ -27,4 +27,4 @@ const CalendarSvg: React.FC<IconProps> = ({
   );
 };
 
-export default CalendarSvg;
+export default minArrow;

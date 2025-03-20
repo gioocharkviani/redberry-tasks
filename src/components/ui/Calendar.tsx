@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import CalendarSvg from "../svg/Calendar";
 import Arrow from "../svg/Arrow";
+import MinArrow from "../svg/minArrow";
 
 interface Calendar {
   label?: string;
@@ -24,9 +25,7 @@ const geoMonth = [
 ];
 
 const Calendar = ({ label }: Calendar) => {
-  const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [selectedDate, setSelectedDate] = useState<string>("DD/MM/YYYY");
 
   const [openC, setOpenC] = useState<boolean>(false);
   const [openM, setOpenM] = useState<boolean>(false);
@@ -42,11 +41,8 @@ const Calendar = ({ label }: Calendar) => {
   const daysInMonth = getDaysInMonth(selectMonth, currentYear);
   const prevDaysInMonth = getDaysInMonth(selectMonth - 1, currentYear);
   const nextDaysInMonth = getDaysInMonth(selectMonth + 1, currentYear) || 0;
-  console.log(prevDaysInMonth);
-  console.log(selectMonth);
 
   const firstDay = new Date(currentYear, selectMonth).getDay();
-  //   const lastDay = new Date(currentYear, selectMonth + 1, 0).getDay();
   function getDaysInMonth(month: number, year: number) {
     if (month < 0) {
       month = 11;
@@ -96,11 +92,6 @@ const Calendar = ({ label }: Calendar) => {
 
   const handleDateSelect = (day: number) => {
     setSelectDay(day);
-    const formattedDate = `${year}/${(selectMonth + 1)
-      .toString()
-      .padStart(2, "0")}/${day.toString().padStart(2, "0")}`;
-    setSelectedDate(formattedDate);
-    // setOpenC(false);
   };
 
   const checkIfDisable = (day: number) => {
@@ -127,7 +118,7 @@ const Calendar = ({ label }: Calendar) => {
       >
         <CalendarSvg />
         <input
-          className="text-[14px] text-[#ADB5BD] font-[400]"
+          className="text-[14px] text-[#ADB5BD] font-[400] outline-0"
           type="text"
           value={selectedDate}
           readOnly
@@ -138,6 +129,7 @@ const Calendar = ({ label }: Calendar) => {
           <div className="flex justify-between gap-5">
             <div className="flex relative w-full">
               <button
+                className="flex w-max items-center gap-2"
                 onClick={(e) => {
                   e.preventDefault();
                   setOpenM(!openM);
@@ -146,6 +138,9 @@ const Calendar = ({ label }: Calendar) => {
                 <span className="font-[700] text-[13px]">
                   {geoMonth[selectMonth]} {currentYear}
                 </span>
+                <div className={`${openM ? "rotate-180" : ""}`}>
+                  <MinArrow />
+                </div>
               </button>
               {openM && (
                 <div
@@ -266,11 +261,19 @@ const Calendar = ({ label }: Calendar) => {
               Cancel
             </button>
             <button
+              disabled={!selectDay}
               onClick={(e) => {
                 e.preventDefault();
+                const formattedDate = `${year}/${(selectMonth + 1)
+                  .toString()
+                  .padStart(2, "0")}/${selectDay?.toString().padStart(2, "0")}`;
+                setSelectedDate(formattedDate);
                 setOpenC(false);
               }}
-              className="cursor-pointer text-[#8338EC] text-[13px] font-[400]"
+              title={!selectDay ? "გთხოვთ აირჩიოთ თარიღი" : ""}
+              className={` text-[#8338EC] text-[13px] font-[400] ${
+                !selectDay ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
               Ok
             </button>
