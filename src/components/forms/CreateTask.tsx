@@ -245,7 +245,7 @@ const CreateTask = ({ department, employ, status, priorities }: cTask) => {
                               alt=""
                               src={`${i.icon}`}
                             />
-                            <span>{pri.name}</span>
+                            <span>{i.name}</span>
                           </div>
                         </button>
                       );

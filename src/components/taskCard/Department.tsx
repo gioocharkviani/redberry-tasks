@@ -26,7 +26,7 @@ const Department = ({
       backgroundColor = "bg-[#8D45FF]";
       break;
     case 6:
-      backgroundColor = "bg-[#00FF00]";
+      backgroundColor = "bg-[#0683bd]";
       break;
     case 7:
       backgroundColor = "bg-[#FF1493]";
@@ -49,7 +49,7 @@ const Department = ({
       <div
         className={`py-[5px] font-[400] text-center ${
           hovered ? "max-w-[88px] hover:max-w-max" : ""
-        } truncate  transition-all duration-300 ease-in-out absolute z-1 cursor-pointer text-[12px] text-white px-[9px] rounded-[15px] h-[24px] ${backgroundColor} hover:scale-105 hover:bg-opacity-90 hover:shadow-lg`}
+        } truncate  transition-all duration-300 ease-in-out absolute z-1 cursor-pointer text-white text-[12px]  px-[9px] rounded-[15px] h-[24px] ${backgroundColor} hover:scale-105 hover:bg-opacity-90 hover:shadow-lg`}
       >
         {data.name}
       </div>
