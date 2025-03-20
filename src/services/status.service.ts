@@ -14,7 +14,6 @@ export async function getAllStatus() {
 }
 
 export async function changeStatus(statisId: number, taskId: number) {
-  console.log(statisId, taskId);
   const data = {
     status_id: statisId,
   };
