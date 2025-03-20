@@ -57,3 +57,40 @@ export interface createCommentBody {
   text: string;
   parent_id: number | null;
 }
+
+export interface cTask {
+  department: DepartmentType[];
+  employ: Employee[];
+  status: Status[];
+  priorities: PriorityTypes[];
+}
+
+interface reqFilds {
+  text: string;
+  id: number;
+}
+
+export interface InputProps {
+  label?: string;
+  badge?: boolean;
+  error?: boolean;
+  errorText?: string;
+  requiredFilds?: reqFilds[];
+  value?: string;
+  onChange?: (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  defaultValue?: string;
+  validator?: { text: string; isValid: (value: string) => boolean }[];
+}
+
+export interface CreateTask {
+  name: string;
+  description: string;
+  due_date: Date;
+  status_id: number;
+  employee_id: number;
+  priority_id: number;
+}

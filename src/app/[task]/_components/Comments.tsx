@@ -16,12 +16,12 @@ const commentTextSchema = z
 
 const Comments = ({ data, taskId }: { data: Comment[]; taskId: number }) => {
   const [commentDataState, setCommentDataState] = useState<Comment[]>(data);
-  const commentCount: number =
-    commentDataState.length +
-    commentDataState.reduce(
-      (acc, comment) => acc + comment.sub_comments.length,
-      0
-    );
+
+  const commentCount: number = commentDataState.reduce(
+    (accumulator, currentValue) =>
+      accumulator + (currentValue.sub_comments?.length || 0),
+    commentDataState.length
+  );
 
   const [newCommentText, setNewCommentText] = useState<string>("");
   const [replayText, setReplayText] = useState<string>("");

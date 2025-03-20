@@ -59,7 +59,9 @@ const DetailInfo = ({ taskData, statusData }: DetailInfo) => {
                 <button
                   onClick={() => handleChangeStatus(i)}
                   key={i.id}
-                  className="px-[14px] text-start cursor-pointer w-full py-[12px] text-[14px] font-[300]"
+                  className={`${
+                    statusSelect === i.name ? "bg-[#f0f0f0]" : ""
+                  } px-[14px] text-start cursor-pointer w-full py-[12px] text-[14px] font-[300]`}
                 >
                   {i.name}
                 </button>

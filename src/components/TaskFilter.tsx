@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/Buttons";
 import Image from "next/image";
 import CustomCheckbox from "./ui/CustomCheckbox";
@@ -215,8 +215,23 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
     );
   };
 
+  const boxRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (boxRef.current && !boxRef.current.contains(event.target as Node)) {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col mt-[52px] mb-[24px]">
+    <div className="flex flex-col mt-[52px] mb-[24px]" ref={boxRef}>
       <div className="relative w-max">
         <div className="border flex items-center gap-[41px] border-[#DEE2E6] w-max rounded-[10px] h-[44px]">
           {selectbyData.map((i) => (
@@ -246,7 +261,7 @@ const TaskFilter = ({ filterBy }: { filterBy: FilterData }) => {
         </div>
 
         {open && (
-          <div className="pt-[40px] max-h-[400px] overflow-y-auto w-full px-[30px] pb-[20] absolute z-[9] top-[50px] bg-white border-[0.5px] border-[#8338EC] rounded-[10px]">
+          <div className="pt-[40px]  max-h-[400px] overflow-y-auto w-full px-[30px] pb-[20] absolute z-[9] top-[50px] bg-white border-[0.5px] border-[#8338EC] rounded-[10px]">
             <div>
               <RenderCheckbox />
             </div>

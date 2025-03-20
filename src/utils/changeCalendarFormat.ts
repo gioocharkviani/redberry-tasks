@@ -22,7 +22,7 @@ export const changeCalendarFormat = (
 
   const dayOfWeek = weekdays[date.getDay()];
   const day = date.getDate();
-  const month = date.getMonth() + 1; // Get month (0-11, so +1)
+  const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
   if (formatType === "georgian") {

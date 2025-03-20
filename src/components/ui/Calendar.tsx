@@ -1,11 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CalendarSvg from "../svg/Calendar";
 import Arrow from "../svg/Arrow";
 import MinArrow from "../svg/minArrow";
 
-interface Calendar {
+interface CalendarProps {
   label?: string;
+  onChange?: (
+    e:
+      | React.ChangeEvent<HTMLDataElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  error?: boolean;
+  errorText?: string;
+  defValue?: Date;
 }
 
 const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
@@ -24,8 +32,8 @@ const geoMonth = [
   "დეკემერი",
 ];
 
-const Calendar = ({ label }: Calendar) => {
-  const [selectedDate, setSelectedDate] = useState<string>("DD/MM/YYYY");
+const Calendar = ({ label, onChange, errorText, defValue }: CalendarProps) => {
+  const [selectedDate, setSelectedDate] = useState<string>("YYYY/M/D");
 
   const [openC, setOpenC] = useState<boolean>(false);
   const [openM, setOpenM] = useState<boolean>(false);
@@ -34,7 +42,10 @@ const Calendar = ({ label }: Calendar) => {
   const year = date.getFullYear();
   const currentDay = date.getDate();
 
-  const [selectDay, setSelectDay] = useState<number | null>(currentDay);
+  const [selectDay, setSelectDay] = useState<number | null | string>(
+    currentDay
+  );
+
   const [selectMonth, setSelectMonth] = useState<number>(month);
   const [currentYear, setCurrentYear] = useState<number>(year);
 
@@ -107,8 +118,39 @@ const Calendar = ({ label }: Calendar) => {
     return false;
   };
 
+  const handleDateSelecte = () => {
+    const formattedDate = `${currentYear}-${(selectMonth + 1)
+      .toString()
+      .padStart(2, "0")}-${selectDay?.toString().padStart(2, "0")}`;
+
+    setSelectedDate(formattedDate);
+    setOpenC(false);
+
+    if (onChange) {
+      onChange({
+        target: { value: formattedDate },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
+
+  const boxRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (boxRef.current && !boxRef.current.contains(event.target as Node)) {
+      setOpenC(false);
+      setOpenM(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative w-[318px]">
+    <div className="relative w-[318px]" ref={boxRef}>
       {label && (
         <label className="text-[#343A40] text-[14px] font-[500]">{label}</label>
       )}
@@ -119,8 +161,9 @@ const Calendar = ({ label }: Calendar) => {
         <CalendarSvg />
         <input
           className="text-[14px] text-[#ADB5BD] font-[400] outline-0"
-          type="text"
+          type="date"
           value={selectedDate}
+          onChange={onChange}
           readOnly
         />
       </div>
@@ -264,10 +307,8 @@ const Calendar = ({ label }: Calendar) => {
               disabled={!selectDay}
               onClick={(e) => {
                 e.preventDefault();
-                const formattedDate = `${year}/${(selectMonth + 1)
-                  .toString()
-                  .padStart(2, "0")}/${selectDay?.toString().padStart(2, "0")}`;
-                setSelectedDate(formattedDate);
+
+                handleDateSelecte();
                 setOpenC(false);
               }}
               title={!selectDay ? "გთხოვთ აირჩიოთ თარიღი" : ""}
@@ -280,6 +321,7 @@ const Calendar = ({ label }: Calendar) => {
           </div>
         </div>
       )}
+      {errorText && <p className="text-red-500 text-sm mt-1">{errorText}</p>}
     </div>
   );
 };

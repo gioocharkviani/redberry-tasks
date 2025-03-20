@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import DdArrow from "../svg/DdArrow";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import arrow from "../../../public/arrowdefault.svg";
 
 const DropDownSelect = ({
   disable,
@@ -12,21 +12,40 @@ const DropDownSelect = ({
   error,
   defaultValue,
   errorText,
+  iconSize,
+  icon,
 }: {
-  selected?: string;
+  selected?: string | number;
   children: React.ReactNode;
   label?: string;
   error?: boolean;
   errorText?: string;
   defaultValue?: string;
   disable?: boolean;
+  icon?: string;
+  iconSize?: "AVATAR" | "ICON";
 }) => {
   const [dropped, setDropped] = useState(false);
   useEffect(() => {
     setDropped(false);
   }, [selected]);
+
+  const boxRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (boxRef.current && !boxRef.current.contains(event.target as Node)) {
+      setDropped(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col" ref={boxRef}>
       {label && (
         <span
           className={`text-[#343A40] text-[14px] font-[500] ${
@@ -38,7 +57,7 @@ const DropDownSelect = ({
       )}
       <div
         className={`py-[0] relative w-full items-start bg-white  border rounded-[5px] ${
-          error ? "border-[#FA4D4D]" : "border-[#CED4DA]"
+          !!error ? "border-[#FA4D4D]" : "border-[#CED4DA]"
         } ${disable ? "border-[#DEE2E6]" : ""}`}
         style={{
           height: dropped ? "max-content" : "45px",
@@ -53,18 +72,36 @@ const DropDownSelect = ({
             setDropped(!dropped);
           }}
         >
-          <span>{(!disable && selected) || defaultValue || ""}</span>
-          {!disable && (
-            <Image
-              src={arrow}
-              width={14}
-              height={14}
-              alt="arrow"
-              className={`w-[14px] h-[14px] ${
-                dropped ? "rotate-180" : "rotate-0"
-              } transition-all ease-in-out`}
-            />
-          )}
+          <div className="flex items-center gap-2">
+            {icon && (
+              <div
+                className={`w-[${iconSize === "AVATAR" ? 28 : 16}px] h-[${
+                  iconSize === "AVATAR" ? 28 : 16
+                }px] overflow-hidden ${
+                  iconSize === "AVATAR"
+                    ? "rounded-[100%] bg-gray-100"
+                    : "rounded-0 bg-none"
+                } flex items-center justify-center `}
+              >
+                <Image
+                  width={iconSize === "AVATAR" ? 28 : 16}
+                  height={iconSize === "AVATAR" ? 28 : 16}
+                  alt=""
+                  src={icon}
+                />
+              </div>
+            )}
+            <span className={`${disable ? "text-[#ADB5BD]" : ""}`}>
+              {(!disable && selected) || defaultValue || ""}
+            </span>
+          </div>
+          <div
+            className={`transition-all ease-in-out  ${
+              dropped ? "rotate-180" : ""
+            }`}
+          >
+            <DdArrow fill={disable ? "#DEE2E6" : "#343A40"} />
+          </div>
         </button>
 
         <div
@@ -75,10 +112,10 @@ const DropDownSelect = ({
             transition: "opacity 0.3s ease-in, max-height 0.3s ease-in-out",
           }}
         >
-          {children}
+          <div className="max-h-[400px] h-max overflow-y-auto">{children}</div>
         </div>
       </div>
-      {errorText && error && (
+      {!!error && (
         <div className="text-[#FA4D4D] text-[12px] mt-[4px]">{errorText}</div>
       )}
     </div>

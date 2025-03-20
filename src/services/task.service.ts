@@ -1,3 +1,4 @@
+import { CreateTask } from "@/types";
 import { unstable_noStore } from "next/cache";
 
 export async function getAllTask() {
@@ -36,3 +37,25 @@ export async function getCurrentTask(id: number) {
     console.error("An error occurred:", error);
   }
 }
+
+export const createNewTask = async (data: CreateTask) => {
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.PERSONAL_TOKEN}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      return res;
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+};

@@ -44,7 +44,9 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
             <Image src="close.svg" width={40} height={40} alt="close" />
           </button>
         </div>
-        <div className="overflow-y-auto h-full px-[50px]">{children}</div>
+        <div className="overflow-y-auto h-full px-[50px] overflow-x-hidden">
+          {children}
+        </div>
       </div>
     </div>
   );

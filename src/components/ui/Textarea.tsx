@@ -1,32 +1,17 @@
+"use client";
 import React from "react";
 import Check from "../svg/Check";
 import Badge from "../svg/Badge";
-
-interface reqFilds {
-  text: string;
-  id: number;
-}
-
-interface InputProps {
-  label?: string;
-  badge?: boolean;
-  error?: boolean;
-  errorText?: string;
-  requiredFilds?: reqFilds[];
-  defaultValue?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-}
+import { InputProps } from "@/types";
 
 const Textarea = ({
   label,
   badge,
-  requiredFilds,
-  defaultValue,
   error,
-  errorText,
+  defaultValue,
   value = "",
   onChange,
+  validator,
 }: InputProps) => {
   return (
     <div className="flex flex-col w-full">
@@ -39,9 +24,7 @@ const Textarea = ({
             ? "border-[#08A508]"
             : error
             ? "border-[#FA4D4D]"
-            : !value && !error
-            ? "border-[#CED4DA]"
-            : ""
+            : "border-[#CED4DA]"
         }`}
       >
         <textarea
@@ -57,31 +40,32 @@ const Textarea = ({
         )}
       </div>
       <div className="flex flex-col gap-1 mt-[8px]">
-        {requiredFilds?.map((_) => {
+        {validator?.map(({ isValid, text }, i) => {
           return (
-            <div key={_.id} className="flex items-center gap-[2px]">
+            <div key={i} className="flex items-center gap-[2px]">
               <Check
                 stroke={`${
-                  error ? "#FA4D4D" : value && !error ? "#08A508" : "#6C757D"
+                  !error && !value
+                    ? "#6C757D"
+                    : value && isValid(value)
+                    ? "#08A508"
+                    : "#FA4D4D"
                 }`}
               />
               <span
                 className={`text-[10px] font-[350px] ${
-                  value && !error
+                  !error && !value
+                    ? "text-[#6C757D]"
+                    : value && isValid(value)
                     ? "text-[#08A508]"
-                    : error
-                    ? "text-[#FA4D4D]"
-                    : "text-[#6C757D]"
+                    : "text-[#FA4D4D]"
                 }`}
               >
-                {_.text}
+                {text}
               </span>
             </div>
           );
         })}
-        {errorText && (
-          <div className="text-[#FA4D4D] text-[12px] mt-[4px]">{errorText}</div>
-        )}
       </div>
     </div>
   );

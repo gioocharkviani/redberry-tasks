@@ -1,4 +1,6 @@
 import { createCommentBody } from "@/types";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 export async function getAllComment(id: number) {
   try {
@@ -25,6 +27,9 @@ export async function createComment({
   taskId: number;
   commentData: createCommentBody;
 }) {
+  const headerList = headers();
+  const pathname = (await headerList).get("x-current-path");
+  revalidatePath(`/${pathname}`);
   try {
     const res = await fetch(
       `${process.env.BASE_URL}/tasks/${taskId}/comments`,
