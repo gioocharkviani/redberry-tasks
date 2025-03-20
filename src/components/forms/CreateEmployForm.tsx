@@ -75,7 +75,7 @@ const CreateEmployForm = () => {
       reset();
       setFile(null);
       setSelectedDep(null);
-      setSuccessMessage("მომხარებელი წამატებით შეიქმნა");
+      setSuccessMessage("თანამშრომელი წამატებით დაემატა");
       setTimeout(() => setSuccessMessage(null), 3000);
       setLoading(false);
       setTimeout(() => {
