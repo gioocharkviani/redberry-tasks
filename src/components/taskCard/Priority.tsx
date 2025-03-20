@@ -19,7 +19,7 @@ const Priority = ({ data }: { data: PriorityTypes }) => {
   }
   return (
     <div
-      className={`flex w-full items-center border-[0.5px] max-w-[86px] h-[26px] p-[4px] gap-1 rounded-[5px]`}
+      className={`flex relative items-center border-[0.5px] w-[86px] overflow-hidden h-[26px] p-[4px] gap-1 rounded-[5px]`}
       style={{ borderColor: mainColor }}
     >
       <Image src={`${data.icon}`} alt={data.name} width={16} height={16} />
