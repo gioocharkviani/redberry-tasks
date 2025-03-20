@@ -32,7 +32,7 @@ const geoMonth = [
   "დეკემერი",
 ];
 
-const Calendar = ({ label, onChange, errorText, defValue }: CalendarProps) => {
+const Calendar = ({ label, onChange, errorText }: CalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<string>("YYYY/M/D");
 
   const [openC, setOpenC] = useState<boolean>(false);
