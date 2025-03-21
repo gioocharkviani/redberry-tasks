@@ -13,13 +13,17 @@ This is a task management platform developed by **Giorgi Charkviani**. The platf
 
 To get started with the project, follow these steps:
 
+## Live demo
+
+- [Live demo](https://redbbery.vercel.app)
+
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/task-management-platform.git
+   git clone https://github.com/gioocharkviani/redberry-tasks.git
    ```
 
-   cd task-management-platform
+   cd redberry-tasks
    npm install
 
 # or
