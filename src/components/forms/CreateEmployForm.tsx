@@ -91,7 +91,7 @@ const CreateEmployForm = () => {
   };
   return (
     <>
-      <div className="w-[813px] mt-[38px] flex flex-col relative">
+      <div className="w-[813px] mt-[38px] h-max flex flex-col relative">
         {(loading || successMessage || errorMessage) && (
           <div className="absolute overflow-hidden z-[20] backdrop-blur-xs w-full h-full flex justify-center items-center">
             {loading ? (

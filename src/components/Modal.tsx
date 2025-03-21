@@ -15,10 +15,14 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
     document.body.style.overflow = open ? "hidden" : "visible";
 
     const handleOutsideClick = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node))
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         if (setClose) {
           setClose();
         }
+      }
     };
 
     if (open) {
@@ -34,9 +38,9 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
   if (!open) return null;
 
   return (
-    <div className="w-full h-[100vh] fixed bg-[#0D0F1026] backdrop-blur-xs top-0 z-[99] left-0 flex justify-center ">
+    <div className="w-full h-[100vh] fixed bg-[#0D0F1026] pb-[50px] backdrop-blur-xs top-0 z-[99] left-0 flex justify-center">
       <div
-        className="bg-white rounded-[10px] relative  pt-[40px] pb-[60px] mt-[118px] px-[50px] max-h-[85vh]"
+        className="bg-white rounded-[10px] relative pt-[40px] h-max  mt-[100px] px-[50px] overflow-hidden"
         ref={modalRef}
       >
         <div className="w-full flex justify-end">
@@ -44,7 +48,7 @@ const Modal = ({ children, setClose, open }: ModalProps) => {
             <Image src="close.svg" width={40} height={40} alt="close" />
           </button>
         </div>
-        <div className="overflow-y-auto h-full px-[50px] overflow-x-hidden">
+        <div className="overflow-y-auto max-h-[60vh] pb-[50px] h-full px-[50px]">
           {children}
         </div>
       </div>
