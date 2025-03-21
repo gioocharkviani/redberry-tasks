@@ -13,10 +13,10 @@ const Header = () => {
   const { isOpen, setIsOpen } = useModalStore((state) => state);
 
   return (
-    <header className="w-full z-10 flex sticky top-0 bg-white justify-center items-center h-[100px] mb-[40px]">
+    <header className="w-[100%] z-10 flex sticky top-0 bg-white justify-center items-center h-[100px] mb-[40px]">
       <div className="w-full max-w-[1980px] gap-4 flex justify-between items-center px-[20px] xl:px-[120px]">
         <Logo />
-        <div className="flex gap-1.5">
+        <div className="flex gap-1.5 shrink-0">
           <Button btntype="second" onClick={() => setIsOpen(true)}>
             თანამშრომლის შექმნა
           </Button>

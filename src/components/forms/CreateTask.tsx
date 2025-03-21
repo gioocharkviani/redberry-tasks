@@ -83,7 +83,7 @@ const CreateTask = ({ department, employ, status, priorities }: cTask) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="gap-[55px] grid grid-cols-2">
+        <div className="gap-[55px] grid grid-cols-1 md:grid-cols-2">
           <Controller
             name="name"
             control={control}
@@ -213,7 +213,7 @@ const CreateTask = ({ department, employ, status, priorities }: cTask) => {
             }}
           />
 
-          <div className="flex gap-5 ">
+          <div className="flex flex-col md:flex-row gap-5 ">
             <Controller
               name="priority_id"
               control={control}

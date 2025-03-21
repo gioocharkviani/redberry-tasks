@@ -11,7 +11,7 @@ const CreateTaskPage = async () => {
   return (
     <div className="flex flex-col">
       <h1 className="text-[34px] font-[600]">შექმენი ახალი დავალება</h1>
-      <div className="w-full bg-[#FBF9FFA6] border-[0.3px] px-[55px] py-[65px] border-[#DDD2FF] rounded-[4px] mt-[25px]">
+      <div className="w-full bg-[#FBF9FFA6] border-[0.3px] p-[10px] md:px-[55px] md:py-[65px] border-[#DDD2FF] rounded-[4px] mt-[25px]">
         <CreateTask
           department={departmentData}
           employ={employ}

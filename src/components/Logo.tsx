@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Logo = () => {
   return (
-    <Link href="/" className="flex gap-2 items-center Logo-group">
+    <Link href="/" className="flex gap-2 items-center Logo-group shrink-0">
       <Image
         width={168}
         height={38}
